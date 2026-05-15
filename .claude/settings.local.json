@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Path \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\backend\\\\src\\\\modules\" -Recurse | ForEach-Object { $_.FullName })",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\styles\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\app\\\\\\(auth\\)\\\\login\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\app\\\\\\(auth\\)\\\\register\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\app\\\\\\(dashboard\\)\\\\entradas\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\app\\\\\\(dashboard\\)\\\\contas\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\app\\\\\\(dashboard\\)\\\\gastos\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\app\\\\\\(dashboard\\)\\\\metas\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\services\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\hooks\")",
+      "PowerShell(Get-ChildItem -Recurse \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\" | Where-Object { -not $_.PSIsContainer } | Select-Object -ExpandProperty FullName)",
+      "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\" -Recurse -File | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\backend\\\\src\" -Recurse -File | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\backend\\\\src\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\components\" -Recurse -File | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\components\\\\\", \"\"\\) })"
+    ]
+  }
+}

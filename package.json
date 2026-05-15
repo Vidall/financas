@@ -1,0 +1,13 @@
+{
+  "name": "financas-web",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "dev": "pnpm -r --parallel dev"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.41"
+  }
+}

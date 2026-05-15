@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-inter: 'Inter', sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text antialiased;
+    font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  }
+
+  /* Scrollbar neon */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-surface;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00f5ff33;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-surface border border-border rounded-xl p-4;
+  }
+
+  .card-glow-cyan {
+    @apply card border-neon-cyan/20 shadow-glow-cyan;
+  }
+
+  .card-glow-green {
+    @apply card border-neon-green/20 shadow-glow-green;
+  }
+
+  .card-glow-purple {
+    @apply card border-neon-purple/20 shadow-glow-purple;
+  }
+
+  .btn-primary {
+    @apply bg-neon-cyan/10 border border-neon-cyan/40 text-neon-cyan
+           hover:bg-neon-cyan/20 hover:shadow-glow-cyan
+           px-4 py-2 rounded-lg text-sm font-medium
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .btn-danger {
+    @apply bg-red-500/10 border border-red-500/40 text-red-400
+           hover:bg-red-500/20
+           px-4 py-2 rounded-lg text-sm font-medium
+           transition-all duration-200 cursor-pointer;
+  }
+
+  .input {
+    @apply bg-surface border border-border text-text placeholder-muted
+           rounded-lg px-3 py-2 text-sm w-full
+           focus:outline-none focus:border-neon-cyan/50 focus:ring-1 focus:ring-neon-cyan/20
+           transition-colors duration-200;
+  }
+
+  .badge-green {
+    @apply text-xs px-2 py-0.5 rounded-full bg-neon-green/10 text-neon-green border border-neon-green/20;
+  }
+
+  .badge-yellow {
+    @apply text-xs px-2 py-0.5 rounded-full bg-yellow-400/10 text-yellow-400 border border-yellow-400/20;
+  }
+
+  .badge-red {
+    @apply text-xs px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 border border-red-500/20;
+  }
+}

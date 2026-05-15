@@ -1,0 +1,211 @@
+{
+  "mes": "Maio",
+  "ano": 2026,
+  "data_referencia": "2026-05-14",
+
+  "resumo_geral": {
+    "planejamento": {
+      "entradas": 3946.66,
+      "saidas": 3916.13,
+      "sobra": 30.53
+    },
+    "real": {
+      "entradas": 3946.66,
+      "saidas": 3945.78,
+      "sobra": 0.88
+    }
+  },
+
+  "carteira": {
+    "total_real": 128.48,
+    "contas": [
+      { "banco": "Mercado Pago", "saldo": 128.48 },
+      { "banco": "Santander", "saldo": 0 }
+    ]
+  },
+
+  "entradas": [
+    { "nome": "Adiantamento", "valor": 1516.00, "recebido": true },
+    { "nome": "Pagamento", "valor": 2430.66, "recebido": true },
+    { "nome": "Outros", "valor": 0, "recebido": true }
+  ],
+  "entradas_aguardando": [
+    { "descricao": "Salário esperado", "valor": 3800.00 }
+  ],
+
+  "contas_fixas": [
+    {
+      "nome": "Parcela Moto (10/46)",
+      "planejado": 946.00,
+      "real": 946.00,
+      "data_pago": "2026-04-19",
+      "status": "Concluído",
+      "observacao": "Tirado R$100 do cofrinho"
+    },
+    {
+      "nome": "Nubank",
+      "planejado": 54.05,
+      "real": 54.05,
+      "data_pago": "2026-05-01",
+      "status": "Concluído",
+      "observacao": null
+    },
+    {
+      "nome": "Mercado Pago",
+      "planejado": 176.42,
+      "real": 176.42,
+      "data_pago": "2026-05-05",
+      "status": "Concluído",
+      "observacao": "Não agendado"
+    },
+    {
+      "nome": "Aluguel",
+      "planejado": 750.00,
+      "real": 750.00,
+      "data_pago": "2026-05-05",
+      "status": "Concluído",
+      "observacao": "Agendado"
+    },
+    {
+      "nome": "Faculdade",
+      "planejado": 231.69,
+      "real": 231.69,
+      "data_pago": "2026-05-06",
+      "status": "Concluído",
+      "observacao": "Agendado"
+    },
+    {
+      "nome": "Neon",
+      "planejado": 317.83,
+      "real": 317.83,
+      "data_pago": "2026-05-05",
+      "status": "Concluído",
+      "observacao": "Tirado R$170 do cofrinho"
+    }
+  ],
+
+  "reservas_e_metas": [
+    {
+      "nome": "Reserva de Emergência",
+      "tipo": "Reserva",
+      "meta_total": 2000.00,
+      "reservado_mes": 200.00,
+      "total_reservado": 200.00,
+      "faltante": 1800.00,
+      "data": "2026-05-01",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Meta Recomeço (Casa)",
+      "tipo": "Meta",
+      "meta_total": 4000.00,
+      "prazo_meses": 8,
+      "valor_mensal_meta": 500.00,
+      "reservado_mes": 250.00,
+      "total_reservado": 250.00,
+      "faltante": 3750.00,
+      "onde": "Mercado Pago",
+      "data": "2026-05-01",
+      "status": "Concluído"
+    }
+  ],
+
+  "gastos_variaveis": [
+    {
+      "nome": "Gasolina",
+      "categoria": "Gasolina",
+      "forma_pagamento": "Débito",
+      "planejado": 235.00,
+      "real": 315.00,
+      "diferenca": -80.00,
+      "data": "2026-04-26",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Vivo",
+      "categoria": "Plano Telefônico",
+      "forma_pagamento": "Débito",
+      "planejado": 40.14,
+      "real": 44.79,
+      "diferenca": -4.65,
+      "data": "2026-04-18",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Cabelo",
+      "categoria": "Saúde e Bem-estar",
+      "forma_pagamento": "Débito",
+      "planejado": 70.00,
+      "real": 70.00,
+      "diferenca": 0.00,
+      "data": "2026-05-01",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Academia",
+      "categoria": "Saúde e Bem-estar",
+      "forma_pagamento": "Débito",
+      "planejado": 80.00,
+      "real": 80.00,
+      "diferenca": 0.00,
+      "data": "2026-05-01",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Lazer",
+      "categoria": "Lazer",
+      "forma_pagamento": "Débito",
+      "planejado": 285.00,
+      "real": 310.00,
+      "diferenca": -25.00,
+      "data": "2026-04-26",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Cafés e Lanches",
+      "categoria": "Restaurante",
+      "forma_pagamento": "Débito",
+      "planejado": 50.00,
+      "real": 50.00,
+      "diferenca": 0.00,
+      "data": "2026-04-26",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Luz",
+      "categoria": "Casa",
+      "forma_pagamento": "Débito",
+      "planejado": 130.00,
+      "real": 50.00,
+      "diferenca": 80.00,
+      "data": "2026-05-13",
+      "status": "Concluído"
+    },
+    {
+      "nome": "Internet",
+      "categoria": "Casa",
+      "forma_pagamento": "Débito",
+      "planejado": 100.00,
+      "real": 100.00,
+      "diferenca": 0.00,
+      "data": "2026-05-01",
+      "status": "Concluído"
+    }
+  ],
+
+  "comprometimento_salario": {
+    "salario_referencia": 3800.00,
+    "custo_fixo_total": 3750.48,
+    "percentual_comprometido": 98.7,
+    "sobra_real": 49.52,
+    "percentual_livre": 1.3,
+    "detalhamento": [
+      { "item": "Parcela Moto", "valor": 946.00, "percentual": 24.9 },
+      { "item": "Aluguel", "valor": 750.00, "percentual": 19.7 },
+      { "item": "Cartão (total)", "valor": 502.65, "percentual": 13.2 },
+      { "item": "Faculdade", "valor": 231.69, "percentual": 6.1 },
+      { "item": "Luz", "valor": 130.00, "percentual": 3.4 },
+      { "item": "Internet", "valor": 100.00, "percentual": 2.6 }
+    ]
+  }
+}
