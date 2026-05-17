@@ -33,7 +33,7 @@ export default function MetasPage() {
       const novo = await criarPlano.mutateAsync({ mes, ano, salarioReferencia: 0 });
       planoId = novo.id;
     }
-    await criarMeta.mutateAsync({ ...dto, planoMensalId: planoId });
+    await criarMeta.mutateAsync({ ...dto, planoMensalId: planoId! });
   }
 
   async function handleRemover(id: string) {

@@ -29,7 +29,7 @@ export default function EntradasPage() {
       const novo = await criarPlano.mutateAsync({ mes, ano, salarioReferencia: 0 });
       planoId = novo.id;
     }
-    await criarEntrada.mutateAsync({ ...dto, planoMensalId: planoId });
+    await criarEntrada.mutateAsync({ ...dto, planoMensalId: planoId! });
   }
 
   return (

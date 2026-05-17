@@ -4,7 +4,15 @@ set -e
 cd /var/www/financas
 
 echo ">>> Atualizando código..."
+git fetch origin main
+git checkout -- .
 git pull origin main
+
+echo ">>> Restaurando .env..."
+if [ ! -f backend/.env ]; then
+  echo "ERRO: backend/.env não encontrado. Crie o arquivo antes de continuar."
+  exit 1
+fi
 
 echo ">>> Instalando dependências..."
 pnpm install --frozen-lockfile

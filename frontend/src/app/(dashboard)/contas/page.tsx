@@ -32,7 +32,7 @@ export default function ContasPage() {
       const novo = await criarPlano.mutateAsync({ mes, ano, salarioReferencia: 0 });
       planoId = novo.id;
     }
-    await criarConta.mutateAsync({ ...dto, planoMensalId: planoId });
+    await criarConta.mutateAsync({ ...dto, planoMensalId: planoId! });
   }
 
   async function handleRemover(id: string) {

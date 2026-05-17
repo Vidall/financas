@@ -33,7 +33,7 @@ export default function GastosPage() {
       const novo = await criarPlano.mutateAsync({ mes, ano, salarioReferencia: 0 });
       planoId = novo.id;
     }
-    await criarGasto.mutateAsync({ ...dto, planoMensalId: planoId });
+    await criarGasto.mutateAsync({ ...dto, planoMensalId: planoId! });
   }
 
   return (
