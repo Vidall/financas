@@ -7,6 +7,11 @@
     --font-inter: 'Inter', sans-serif;
   }
 
+  /* Suporte ao safe area do iOS (notch / home indicator) */
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
   * {
     box-sizing: border-box;
   }

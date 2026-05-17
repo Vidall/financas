@@ -82,7 +82,7 @@ export default function DashboardPage() {
           />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 text-xs mb-5">
           <div>
             <p className="text-muted">Salário ref.</p>
             <p className="text-text font-medium mt-0.5">R$ {data.comprometimento.salarioReferencia.toFixed(2)}</p>
@@ -104,16 +104,20 @@ export default function DashboardPage() {
         {/* Detalhamento por item */}
         <div className="space-y-2.5">
           {data.comprometimento.detalhamento.map((item, i) => (
-            <div key={i} className="flex items-center gap-3 text-xs">
-              <span className="text-muted truncate w-36">{item.item}</span>
-              <div className="flex-1 bg-border rounded-full h-1.5">
+            <div key={i} className="text-xs">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-muted truncate max-w-[60%]">{item.item}</span>
+                <div className="flex items-center gap-2 shrink-0">
+                  <span className="text-muted">{item.percentual}%</span>
+                  <span className="text-text">R$ {item.valor.toFixed(2)}</span>
+                </div>
+              </div>
+              <div className="w-full bg-border rounded-full h-1.5">
                 <div
                   className="h-1.5 rounded-full bg-neon-cyan transition-all duration-500"
                   style={{ width: `${Math.min(item.percentual, 100)}%` }}
                 />
               </div>
-              <span className="text-muted w-9 text-right shrink-0">{item.percentual}%</span>
-              <span className="text-text w-20 text-right shrink-0">R$ {item.valor.toFixed(2)}</span>
             </div>
           ))}
         </div>

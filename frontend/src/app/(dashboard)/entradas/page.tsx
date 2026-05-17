@@ -60,14 +60,14 @@ export default function EntradasPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead>
+              <thead className="hidden md:table-header-group">
                 <tr className="border-b border-border">
                   {['Nome', 'Valor', 'Status', 'Data', ''].map(h => (
                     <th key={h} className="px-4 py-2 text-left text-xs text-muted font-medium">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="md:table-row-group block space-y-0">
                 {entradas.map(e => (
                   <EntradaRow
                     key={e.id}

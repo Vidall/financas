@@ -26,7 +26,9 @@
       "Bash(git fetch *)",
       "Bash(git ls-remote *)",
       "Bash(git push *)",
-      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(64\\).toString\\('base64'\\)\\)\")"
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(64\\).toString\\('base64'\\)\\)\")",
+      "Bash(Get-ChildItem -Path \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)"
     ]
   }
 }

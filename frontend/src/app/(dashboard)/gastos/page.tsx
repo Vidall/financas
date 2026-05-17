@@ -38,7 +38,7 @@ export default function GastosPage() {
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 sm:grid-cols-3 gap-3 md:gap-4">
         <div className="card">
           <p className="text-xs text-muted mb-1">Planejado</p>
           <p className="text-xl font-bold text-text">R$ {totalPlanejado.toFixed(2)}</p>
@@ -68,14 +68,14 @@ export default function GastosPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead>
+              <thead className="hidden md:table-header-group">
                 <tr className="border-b border-border">
                   {['Nome', 'Categoria', 'Pagamento', 'Planejado', 'Real', 'Diferença', 'Status', 'Data', ''].map(h => (
                     <th key={h} className="px-4 py-2 text-left text-xs text-muted font-medium">{h}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="md:table-row-group block space-y-0">
                 {gastos.map(g => <GastoRow key={g.id} gasto={g} onRemover={handleRemover} />)}
               </tbody>
             </table>
