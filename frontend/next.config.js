@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  transpilePackages: ['@financas/core'],
-};
+const nextConfig = {};
 
 module.exports = nextConfig;
