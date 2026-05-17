@@ -22,7 +22,10 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\luanv\\\\.claude\" -Recurse -Depth 3 | ForEach-Object { $_.FullName })",
       "Bash(ls \"C:\\\\Users\\\\luanv\\\\.claude\\\\agents\")",
       "Read(//c/Users/luanv/.claude/agents/**)",
-      "PowerShell(if \\(-not \\(Test-Path \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\"\\)\\) { New-Item -ItemType Directory -Force \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\" }; Copy-Item \"C:\\\\Users\\\\luanv\\\\.claude\\\\agents\\\\digital-business-orchestrator.md\" \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\\\\digital-business-orchestrator.md\"; Write-Output \"Copiado com sucesso\")"
+      "PowerShell(if \\(-not \\(Test-Path \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\"\\)\\) { New-Item -ItemType Directory -Force \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\" }; Copy-Item \"C:\\\\Users\\\\luanv\\\\.claude\\\\agents\\\\digital-business-orchestrator.md\" \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\\\\digital-business-orchestrator.md\"; Write-Output \"Copiado com sucesso\")",
+      "Bash(git fetch *)",
+      "Bash(git ls-remote *)",
+      "Bash(git push *)"
     ]
   }
 }
