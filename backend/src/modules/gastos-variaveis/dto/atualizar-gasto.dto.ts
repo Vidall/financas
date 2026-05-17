@@ -6,6 +6,11 @@ export class AtualizarGastoDto {
   @IsOptional()
   valorReal?: number;
 
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  valorUtilizado?: number;
+
   @IsDateString()
   @IsOptional()
   data?: string;

@@ -144,7 +144,9 @@ export class PlanoMensalAggregate {
   }
 
   get comprometimentoSalario(): ComprometimentoSalario {
-    const salario = this._plano.salarioReferencia;
+    const salario = this._plano.salarioReferencia.eZero()
+      ? this.totalEntradasPlanejadas
+      : this._plano.salarioReferencia;
     const custoTotal = this.totalSaidasPlanejadas;
 
     const detalhamento: ItemComprometimento[] = [

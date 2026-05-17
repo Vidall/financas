@@ -12,6 +12,7 @@ export class GastoVariavelMapper {
       formaPagamento: raw.formaPagamento as FormaPagamento,
       valorPlanejado: Dinheiro.de(raw.valorPlanejado),
       valorReal: raw.valorReal != null ? Dinheiro.de(raw.valorReal) : undefined,
+      valorUtilizado: raw.valorUtilizado != null ? Dinheiro.de(raw.valorUtilizado) : undefined,
       data: raw.data ?? undefined,
       status: StatusPagamento.de(raw.status),
     });
@@ -27,6 +28,7 @@ export class GastoVariavelMapper {
       formaPagamento: domain.formaPagamento,
       valorPlanejado: domain.valorPlanejado.valor,
       valorReal: domain.valorReal?.valor ?? null,
+      valorUtilizado: domain.valorUtilizado?.valor ?? null,
       data: domain.data ?? null,
       status: domain.status.valor,
     };

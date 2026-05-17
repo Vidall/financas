@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useMeses, useCriarPlano } from '../../../hooks/usePlanoMensal';
-import { useGastosVariaveis, useCriarGasto, useRemoverGasto } from '../../../hooks/useGastosVariaveis';
+import { useGastosVariaveis, useCriarGasto, useRemoverGasto, useAtualizarGasto } from '../../../hooks/useGastosVariaveis';
 import { GastoRow } from '../../../components/gastos-variaveis/GastoRow';
 import { NovoGastoModal } from '../../../components/gastos-variaveis/NovoGastoModal';
-import type { CriarGastoVariavelDTO } from '@financas/core';
+import { AtualizarGastoModal } from '../../../components/gastos-variaveis/AtualizarGastoModal';
+import type { CriarGastoVariavelDTO, GastoVariavelDTO } from '@financas/core';
 
 export default function GastosPage() {
   const { mes, ano } = usePeriodoStore();
@@ -16,8 +17,10 @@ export default function GastosPage() {
   const { data: gastos = [], isLoading } = useGastosVariaveis(plano?.id ?? '');
   const criarGasto = useCriarGasto();
   const removerGasto = useRemoverGasto();
+  const atualizarGasto = useAtualizarGasto();
   const criarPlano = useCriarPlano();
   const [modal, setModal] = useState(false);
+  const [atualizandoGasto, setAtualizandoGasto] = useState<GastoVariavelDTO | null>(null);
 
   const totalPlanejado = gastos.reduce((s, g) => s + g.valorPlanejado, 0);
   const totalReal = gastos.reduce((s, g) => s + (g.valorReal ?? 0), 0);
@@ -25,6 +28,10 @@ export default function GastosPage() {
 
   async function handleRemover(id: string) {
     await removerGasto.mutateAsync(id);
+  }
+
+  async function handleAtualizar(id: string, dto: { valorReal?: number; valorUtilizado?: number; data?: string }) {
+    await atualizarGasto.mutateAsync({ id, ...dto });
   }
 
   async function handleSalvar(dto: CriarGastoVariavelDTO) {
@@ -76,7 +83,14 @@ export default function GastosPage() {
                 </tr>
               </thead>
               <tbody className="md:table-row-group block space-y-0">
-                {gastos.map(g => <GastoRow key={g.id} gasto={g} onRemover={handleRemover} />)}
+                {gastos.map(g => (
+                  <GastoRow
+                    key={g.id}
+                    gasto={g}
+                    onRemover={handleRemover}
+                    onAtualizar={id => setAtualizandoGasto(gastos.find(x => x.id === id)!)}
+                  />
+                ))}
               </tbody>
             </table>
           </div>
@@ -88,6 +102,13 @@ export default function GastosPage() {
           planoMensalId={plano?.id ?? ''}
           onSalvar={handleSalvar}
           onFechar={() => setModal(false)}
+        />
+      )}
+      {atualizandoGasto && (
+        <AtualizarGastoModal
+          gasto={atualizandoGasto}
+          onSalvar={handleAtualizar}
+          onFechar={() => setAtualizandoGasto(null)}
         />
       )}
     </div>

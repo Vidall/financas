@@ -2,7 +2,7 @@
 
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useDashboard, useMeses } from '../../../hooks/usePlanoMensal';
-import { Target } from 'lucide-react';
+import { Target, Wallet } from 'lucide-react';
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
@@ -65,6 +65,48 @@ export default function DashboardPage() {
           color="border-neon-purple/20"
         />
       </div>
+
+      {/* Saídas detalhadas */}
+      <div className="grid grid-cols-2 gap-4">
+        <StatCard
+          label="Contas Fixas (real)"
+          value={`R$ ${(data.real as any).saidasContas?.toFixed(2) ?? '0.00'}`}
+          sub={`Planejado: R$ ${(data.planejamento as any).saidasContas?.toFixed(2) ?? '0.00'}`}
+          color="border-neon-cyan/20"
+        />
+        <StatCard
+          label="Gastos (real)"
+          value={`R$ ${(data.real as any).saidasGastos?.toFixed(2) ?? '0.00'}`}
+          sub={`Planejado: R$ ${(data.planejamento as any).saidasGastos?.toFixed(2) ?? '0.00'}`}
+          color="border-neon-orange/20"
+        />
+      </div>
+
+      {/* Carteira */}
+      {(data as any).carteira && (
+        <div className="card border-neon-purple/20">
+          <div className="flex items-center gap-2 mb-3">
+            <Wallet size={14} className="text-neon-purple" />
+            <h2 className="text-sm font-semibold text-text">Carteira</h2>
+          </div>
+          <div className="grid grid-cols-3 gap-3 text-xs">
+            <div>
+              <p className="text-muted">Valor real</p>
+              <p className="text-text font-medium mt-0.5">R$ {(data as any).carteira.valorReal.toFixed(2)}</p>
+            </div>
+            <div>
+              <p className="text-muted">Deveria ter</p>
+              <p className="text-text font-medium mt-0.5">R$ {(data as any).carteira.valorDeveria.toFixed(2)}</p>
+            </div>
+            <div>
+              <p className="text-muted">Diferença</p>
+              <p className={`font-medium mt-0.5 ${(data as any).carteira.diferenca >= 0 ? 'text-neon-green' : 'text-neon-orange'}`}>
+                {(data as any).carteira.diferenca >= 0 ? '+' : ''}R$ {(data as any).carteira.diferenca.toFixed(2)}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Comprometimento do salário */}
       <div className="card">

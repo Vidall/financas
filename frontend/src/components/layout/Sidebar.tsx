@@ -9,6 +9,7 @@ import {
   Receipt,
   ShoppingCart,
   Target,
+  Wallet,
   LogOut,
 } from 'lucide-react';
 
@@ -18,6 +19,7 @@ export const NAV = [
   { href: '/contas',    label: 'Contas Fixas',     icon: Receipt },
   { href: '/gastos',    label: 'Gastos',           icon: ShoppingCart },
   { href: '/metas',     label: 'Metas',            icon: Target },
+  { href: '/carteira',  label: 'Carteira',         icon: Wallet },
 ];
 
 export function Sidebar() {

@@ -13,6 +13,7 @@ export interface GastoVariavelProps {
   formaPagamento: FormaPagamento;
   valorPlanejado: Dinheiro;
   valorReal?: Dinheiro;
+  valorUtilizado?: Dinheiro;
   data?: Date;
   status: StatusPagamento;
 }
@@ -38,9 +39,15 @@ export class GastoVariavel {
   get formaPagamento(): FormaPagamento { return this.props.formaPagamento; }
   get valorPlanejado(): Dinheiro { return this.props.valorPlanejado; }
   get valorReal(): Dinheiro | undefined { return this.props.valorReal; }
+  get valorUtilizado(): Dinheiro | undefined { return this.props.valorUtilizado; }
   get data(): Date | undefined { return this.props.data; }
   get status(): StatusPagamento { return this.props.status; }
   get events(): GastoExcedidoEvent[] { return [...this._events]; }
+
+  get valorSobra(): number | undefined {
+    if (!this.props.valorReal || !this.props.valorUtilizado) return undefined;
+    return this.props.valorReal.subtrairPermitindoNegativo(this.props.valorUtilizado);
+  }
 
   get diferenca(): number {
     if (!this.props.valorReal) return 0;
@@ -49,6 +56,10 @@ export class GastoVariavel {
 
   get excedido(): boolean {
     return this.diferenca < 0;
+  }
+
+  atualizarUtilizado(valorUtilizado: Dinheiro): GastoVariavel {
+    return new GastoVariavel({ ...this.props, valorUtilizado });
   }
 
   lancar(valorReal: Dinheiro, data: Date): GastoVariavel {

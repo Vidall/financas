@@ -17,6 +17,8 @@ export interface GastoVariavelDTO {
   formaPagamento: string;
   valorPlanejado: number;
   valorReal?: number;
+  valorUtilizado?: number;
+  valorSobra?: number;
   diferenca: number;
   excedido: boolean;
   data?: string;

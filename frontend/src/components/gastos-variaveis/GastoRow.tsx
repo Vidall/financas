@@ -1,11 +1,12 @@
 'use client';
 
-import { TrendingUp, Trash2 } from 'lucide-react';
+import { TrendingUp, Trash2, Pencil } from 'lucide-react';
 import type { GastoVariavelDTO } from '@financas/core';
 
 interface Props {
   gasto: GastoVariavelDTO;
   onRemover: (id: string) => void;
+  onAtualizar: (id: string) => void;
 }
 
 function BadgeStatus({ status }: { status: string }) {
@@ -13,15 +14,25 @@ function BadgeStatus({ status }: { status: string }) {
   return <span className="badge-yellow">Pendente</span>;
 }
 
-export function GastoRow({ gasto, onRemover }: Props) {
-  const removeBtn = (
-    <button
-      onClick={() => onRemover(gasto.id)}
-      className="p-1.5 text-muted hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
-      title="Remover gasto"
-    >
-      <Trash2 size={14} />
-    </button>
+export function GastoRow({ gasto, onRemover, onAtualizar }: Props) {
+  const g = gasto as any;
+  const actions = (
+    <div className="flex items-center gap-1">
+      <button
+        onClick={() => onAtualizar(gasto.id)}
+        className="p-1.5 text-muted hover:text-neon-cyan hover:bg-neon-cyan/10 rounded transition-colors"
+        title="Atualizar gasto"
+      >
+        <Pencil size={14} />
+      </button>
+      <button
+        onClick={() => onRemover(gasto.id)}
+        className="p-1.5 text-muted hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+        title="Remover gasto"
+      >
+        <Trash2 size={14} />
+      </button>
+    </div>
   );
 
   return (
@@ -42,6 +53,12 @@ export function GastoRow({ gasto, onRemover }: Props) {
             {gasto.excedido && <TrendingUp size={13} />}
             {gasto.valorReal !== undefined ? `R$ ${gasto.valorReal.toFixed(2)}` : '—'}
           </span>
+          {g.valorUtilizado !== undefined && (
+            <div className="text-xs text-muted mt-0.5">
+              Utilizado: R$ {g.valorUtilizado.toFixed(2)}
+              {g.valorSobra !== undefined && ` · Sobra: R$ ${g.valorSobra.toFixed(2)}`}
+            </div>
+          )}
         </td>
         <td className={`px-4 py-3 text-xs font-medium ${gasto.diferenca < 0 ? 'text-neon-orange' : gasto.diferenca > 0 ? 'text-neon-green' : 'text-muted'}`}>
           {gasto.diferenca !== 0 ? `${gasto.diferenca > 0 ? '+' : ''}R$ ${gasto.diferenca.toFixed(2)}` : '—'}
@@ -50,7 +67,7 @@ export function GastoRow({ gasto, onRemover }: Props) {
         <td className="px-4 py-3 text-sm text-muted">
           {gasto.data ? new Date(gasto.data).toLocaleDateString('pt-BR') : '—'}
         </td>
-        <td className="px-4 py-3">{removeBtn}</td>
+        <td className="px-4 py-3">{actions}</td>
       </tr>
 
       {/* Card mobile */}
@@ -80,6 +97,14 @@ export function GastoRow({ gasto, onRemover }: Props) {
                     </span>
                   </div>
                 )}
+                {g.valorUtilizado !== undefined && (
+                  <div className="text-muted">
+                    Utilizado: <span className="text-neon-cyan font-medium">R$ {g.valorUtilizado.toFixed(2)}</span>
+                    {g.valorSobra !== undefined && (
+                      <> · Sobra: <span className={`font-medium ${g.valorSobra < 0 ? 'text-neon-orange' : 'text-neon-green'}`}>R$ {g.valorSobra.toFixed(2)}</span></>
+                    )}
+                  </div>
+                )}
                 {gasto.diferenca !== 0 && (
                   <div className={`font-medium ${gasto.diferenca < 0 ? 'text-neon-orange' : 'text-neon-green'}`}>
                     {gasto.diferenca > 0 ? '+' : ''}R$ {gasto.diferenca.toFixed(2)}
@@ -89,7 +114,7 @@ export function GastoRow({ gasto, onRemover }: Props) {
                   <div className="text-muted">{new Date(gasto.data).toLocaleDateString('pt-BR')}</div>
                 )}
               </div>
-              <div className="self-end">{removeBtn}</div>
+              <div className="self-end">{actions}</div>
             </div>
           </div>
         </td>

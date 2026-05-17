@@ -18,15 +18,24 @@ export interface ResumoDashboardDTO {
   periodo: { mes: number; ano: number; descricao: string };
   planejamento: {
     entradas: number;
+    saidasContas: number;
+    saidasGastos: number;
     saidas: number;
     sobra: number;
   };
   real: {
     entradas: number;
+    saidasContas: number;
+    saidasGastos: number;
     saidas: number;
     sobra: number;
   };
   saldoCarteira: number;
+  carteira: {
+    valorReal: number;
+    valorDeveria: number;
+    diferenca: number;
+  };
   comprometimento: ComprometimentoDTO;
   totalMetas: number;
   totalMetasAtingidas: number;

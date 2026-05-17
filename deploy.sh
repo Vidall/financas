@@ -24,7 +24,7 @@ cd core && pnpm build && cd ..
 echo ">>> Backend: migrate + build..."
 cd backend
 pnpm prisma generate
-npx prisma migrate deploy
+npx prisma db push
 pnpm build
 cd ..
 

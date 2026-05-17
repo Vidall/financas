@@ -83,6 +83,7 @@ model GastoVariavel {
   formaPagamento String      @db.VarChar(100)
   valorPlanejado Float
   valorReal      Float?
+  valorUtilizado Float?
   data           DateTime?
   status         String      @default("Pendente") @db.VarChar(50)
   planoMensal    PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)

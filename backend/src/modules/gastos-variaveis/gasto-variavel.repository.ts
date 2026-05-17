@@ -37,6 +37,7 @@ export class GastoVariavelRepository implements IGastoVariavelRepository {
         formaPagamento: data.formaPagamento,
         valorPlanejado: data.valorPlanejado,
         valorReal: data.valorReal,
+        valorUtilizado: data.valorUtilizado,
         data: data.data,
         status: data.status,
       },

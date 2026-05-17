@@ -26,8 +26,8 @@ export function useCriarGasto() {
 export function useAtualizarGasto() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, valorReal, data }: { id: string; valorReal: number; data: string }) =>
-      api.patch(`/gastos-variaveis/${id}`, { valorReal, data }).then(r => r.data),
+    mutationFn: ({ id, ...dto }: { id: string; valorReal?: number; valorUtilizado?: number; data?: string }) =>
+      api.patch(`/gastos-variaveis/${id}`, dto).then(r => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['gastos-variaveis'] }),
   });
 }

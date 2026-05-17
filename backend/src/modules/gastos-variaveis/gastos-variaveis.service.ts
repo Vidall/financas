@@ -15,6 +15,8 @@ function toDTO(gasto: GastoVariavel): GastoVariavelDTO {
     formaPagamento: gasto.formaPagamento,
     valorPlanejado: gasto.valorPlanejado.valor,
     valorReal: gasto.valorReal?.valor,
+    valorUtilizado: gasto.valorUtilizado?.valor,
+    valorSobra: gasto.valorSobra,
     diferenca: gasto.diferenca,
     excedido: gasto.excedido,
     data: gasto.data?.toISOString(),
@@ -43,7 +45,7 @@ export class GastosVariaveisService {
     const gasto = await this.gastoRepo.findById(id);
     if (!gasto) throw new Error('Gasto não encontrado');
 
-    const atualizado = dto.valorReal !== undefined && dto.data
+    let atualizado = dto.valorReal !== undefined && dto.data
       ? gasto.lancar(Dinheiro.de(dto.valorReal), new Date(dto.data))
       : GastoVariavel.reconstituir({
           id: gasto.id,
@@ -53,9 +55,14 @@ export class GastosVariaveisService {
           formaPagamento: gasto.formaPagamento,
           valorPlanejado: gasto.valorPlanejado,
           valorReal: dto.valorReal !== undefined ? Dinheiro.de(dto.valorReal) : gasto.valorReal,
+          valorUtilizado: gasto.valorUtilizado,
           data: dto.data ? new Date(dto.data) : gasto.data,
           status: gasto.status,
         });
+
+    if (dto.valorUtilizado !== undefined) {
+      atualizado = atualizado.atualizarUtilizado(Dinheiro.de(dto.valorUtilizado));
+    }
 
     await this.gastoRepo.save(atualizado);
     return toDTO(atualizado);

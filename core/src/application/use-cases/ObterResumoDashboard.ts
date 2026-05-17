@@ -34,20 +34,32 @@ export class ObterResumoDashboard {
     const aggregate = PlanoMensalAggregate.reconstituir(plano, entradas, contasFixas, gastos, metas, contas);
     const comprometimento = aggregate.comprometimentoSalario;
 
+    const saldoCarteira = aggregate.saldoCarteira.valor;
+    const sobraReal = aggregate.sobraReal;
+
     return {
       planoId: plano.id,
       periodo: { mes, ano, descricao: periodo.toString() },
       planejamento: {
         entradas: aggregate.totalEntradasPlanejadas.valor,
+        saidasContas: aggregate.totalContasFixasPlanejadas.valor,
+        saidasGastos: aggregate.totalGastosPlanejados.valor,
         saidas: aggregate.totalSaidasPlanejadas.valor,
         sobra: aggregate.sobraPlanejada,
       },
       real: {
         entradas: aggregate.totalEntradasReais.valor,
+        saidasContas: aggregate.totalContasFixasReais.valor,
+        saidasGastos: aggregate.totalGastosReais.valor,
         saidas: aggregate.totalSaidasReais.valor,
-        sobra: aggregate.sobraReal,
+        sobra: sobraReal,
       },
-      saldoCarteira: aggregate.saldoCarteira.valor,
+      saldoCarteira,
+      carteira: {
+        valorReal: saldoCarteira,
+        valorDeveria: sobraReal,
+        diferenca: saldoCarteira - sobraReal,
+      },
       comprometimento,
       totalMetas: metas.length,
       totalMetasAtingidas: metas.filter(m => m.atingida).length,

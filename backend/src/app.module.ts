@@ -6,6 +6,7 @@ import { EntradasModule } from './modules/entradas/entradas.module';
 import { ContasFixasModule } from './modules/contas-fixas/contas-fixas.module';
 import { GastosVariaveisModule } from './modules/gastos-variaveis/gastos-variaveis.module';
 import { MetasModule } from './modules/metas/metas.module';
+import { CarteirasModule } from './modules/contas-bancarias/carteiras.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { MetasModule } from './modules/metas/metas.module';
     ContasFixasModule,
     GastosVariaveisModule,
     MetasModule,
+    CarteirasModule,
   ],
 })
 export class AppModule {}
