@@ -23,9 +23,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@financas/core": [
-        "../core/src/index.ts"
       ]
     },
     "allowJs": true,
