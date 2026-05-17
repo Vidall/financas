@@ -14,7 +14,15 @@
       "PowerShell(Get-ChildItem -Recurse \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\" | Where-Object { -not $_.PSIsContainer } | Select-Object -ExpandProperty FullName)",
       "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\" -Recurse -File | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\\", \"\"\\) })",
       "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\backend\\\\src\" -Recurse -File | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\backend\\\\src\\\\\", \"\"\\) })",
-      "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\components\" -Recurse -File | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\components\\\\\", \"\"\\) })"
+      "PowerShell(Get-ChildItem \"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\components\" -Recurse -File | ForEach-Object { $_.FullName.Replace\\(\"d:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\frontend\\\\src\\\\components\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem d:\\\\meusProjetos\\\\EmProcesso\\\\financas -Depth 2 | Where-Object { !$_.PSIsContainer } | Select-Object FullName)",
+      "Bash(git -C \"d:/meusProjetos/EmProcesso/financas\" log --oneline -10)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\luanv\\\\.claude\" -Recurse -Depth 2)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\luanv\\\\.claude\" -Recurse -Depth 3 | ForEach-Object { $_.FullName })",
+      "Bash(ls \"C:\\\\Users\\\\luanv\\\\.claude\\\\agents\")",
+      "Read(//c/Users/luanv/.claude/agents/**)",
+      "PowerShell(if \\(-not \\(Test-Path \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\"\\)\\) { New-Item -ItemType Directory -Force \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\" }; Copy-Item \"C:\\\\Users\\\\luanv\\\\.claude\\\\agents\\\\digital-business-orchestrator.md\" \"D:\\\\meusProjetos\\\\EmProcesso\\\\financas\\\\.claude\\\\agents\\\\digital-business-orchestrator.md\"; Write-Output \"Copiado com sucesso\")"
     ]
   }
 }
