@@ -21,5 +21,5 @@ if %errorlevel% neq 0 (
 )
 
 echo.
-echo Pressione qualquer tecla para fechar...
+echo Pressione qualquer tecla para fechar....
 pause
