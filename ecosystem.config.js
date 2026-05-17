@@ -17,6 +17,7 @@ module.exports = {
       cwd: '/var/www/financas/frontend',
       script: 'node_modules/.bin/next',
       args: 'start -p 3000',
+      exec_mode: 'fork',
       env: {
         NODE_ENV: 'production',
       },
