@@ -20,7 +20,7 @@ export function ContaFixaRow({ conta, onPagar }: Props) {
   return (
     <tr className="border-b border-border hover:bg-white/[0.02] transition-colors">
       <td className="px-4 py-3 text-sm text-text">{conta.nome}</td>
-      <td className="px-4 py-3 text-sm text-muted">R$ {conta.valorPlanejado.toFixed(2)}</td>
+      <td className="px-4 py-3 text-sm text-muted">R$ {(conta.valorPlanejado ?? 0).toFixed(2)}</td>
       <td className={`px-4 py-3 text-sm font-medium ${excedido ? 'text-neon-orange' : 'text-text'}`}>
         {conta.valorReal !== undefined ? `R$ ${conta.valorReal.toFixed(2)}` : '—'}
       </td>
