@@ -3,27 +3,27 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model Usuario {
-  id           String         @id @default(uuid())
-  nome         String
-  email        String         @unique
-  senhaHash    String
-  criadoEm    DateTime       @default(now())
-  planos       PlanoMensal[]
-  contas       ContaBancaria[]
+  id            String          @id @default(uuid()) @db.VarChar(36)
+  nome          String          @db.VarChar(255)
+  email         String          @unique @db.VarChar(255)
+  senhaHash     String          @db.VarChar(255)
+  criadoEm     DateTime        @default(now())
+  planos        PlanoMensal[]
+  contas        ContaBancaria[]
   refreshTokens RefreshToken[]
 
   @@map("usuarios")
 }
 
 model ContaBancaria {
-  id        String  @id @default(uuid())
-  usuarioId String
-  banco     String
+  id        String  @id @default(uuid()) @db.VarChar(36)
+  usuarioId String  @db.VarChar(36)
+  banco     String  @db.VarChar(255)
   saldo     Float   @default(0)
   usuario   Usuario @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
@@ -31,85 +31,85 @@ model ContaBancaria {
 }
 
 model PlanoMensal {
-  id               String         @id @default(uuid())
-  usuarioId        String
-  mes              Int
-  ano              Int
+  id                String          @id @default(uuid()) @db.VarChar(36)
+  usuarioId         String          @db.VarChar(36)
+  mes               Int
+  ano               Int
   salarioReferencia Float
-  criadoEm        DateTime       @default(now())
-  usuario          Usuario        @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
-  entradas         Entrada[]
-  contasFixas      ContaFixa[]
-  gastosVariaveis  GastoVariavel[]
-  metas            Meta[]
+  criadoEm         DateTime        @default(now())
+  usuario           Usuario         @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  entradas          Entrada[]
+  contasFixas       ContaFixa[]
+  gastosVariaveis   GastoVariavel[]
+  metas             Meta[]
 
   @@unique([usuarioId, mes, ano])
   @@map("planos_mensais")
 }
 
 model Entrada {
-  id           String      @id @default(uuid())
-  planoMensalId String
-  nome         String
-  valor        Float
-  recebido     Boolean     @default(false)
-  data         DateTime?
-  planoMensal  PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
+  id            String      @id @default(uuid()) @db.VarChar(36)
+  planoMensalId String      @db.VarChar(36)
+  nome          String      @db.VarChar(255)
+  valor         Float
+  recebido      Boolean     @default(false)
+  data          DateTime?
+  planoMensal   PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
 
   @@map("entradas")
 }
 
 model ContaFixa {
-  id            String      @id @default(uuid())
-  planoMensalId String
-  nome          String
+  id             String      @id @default(uuid()) @db.VarChar(36)
+  planoMensalId  String      @db.VarChar(36)
+  nome           String      @db.VarChar(255)
   valorPlanejado Float
-  valorReal     Float?
-  vencimento    DateTime?
-  dataPago      DateTime?
-  status        String      @default("Pendente")
-  observacao    String?
-  planoMensal   PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
+  valorReal      Float?
+  vencimento     DateTime?
+  dataPago       DateTime?
+  status         String      @default("Pendente") @db.VarChar(50)
+  observacao     String?     @db.Text
+  planoMensal    PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
 
   @@map("contas_fixas")
 }
 
 model GastoVariavel {
-  id            String      @id @default(uuid())
-  planoMensalId String
-  nome          String
-  categoriaNome String
-  categoriaIcone String     @default("💰")
-  formaPagamento String
+  id             String      @id @default(uuid()) @db.VarChar(36)
+  planoMensalId  String      @db.VarChar(36)
+  nome           String      @db.VarChar(255)
+  categoriaNome  String      @db.VarChar(255)
+  categoriaIcone String      @default("💰") @db.VarChar(10)
+  formaPagamento String      @db.VarChar(100)
   valorPlanejado Float
-  valorReal     Float?
-  data          DateTime?
-  status        String      @default("Pendente")
-  planoMensal   PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
+  valorReal      Float?
+  data           DateTime?
+  status         String      @default("Pendente") @db.VarChar(50)
+  planoMensal    PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
 
   @@map("gastos_variaveis")
 }
 
 model Meta {
-  id            String      @id @default(uuid())
-  planoMensalId String
-  nome          String
-  tipo          String
+  id            String      @id @default(uuid()) @db.VarChar(36)
+  planoMensalId String      @db.VarChar(36)
+  nome          String      @db.VarChar(255)
+  tipo          String      @db.VarChar(100)
   metaTotal     Float
   valorMensal   Float
   totalGuardado Float       @default(0)
-  onde          String?
+  onde          String?     @db.VarChar(255)
   data          DateTime?
-  status        String      @default("Pendente")
+  status        String      @default("Pendente") @db.VarChar(50)
   planoMensal   PlanoMensal @relation(fields: [planoMensalId], references: [id], onDelete: Cascade)
 
   @@map("metas")
 }
 
 model RefreshToken {
-  id        String    @id @default(uuid())
-  usuarioId String
-  tokenHash String    @unique
+  id        String    @id @default(uuid()) @db.VarChar(36)
+  usuarioId String    @db.VarChar(36)
+  tokenHash String    @unique @db.VarChar(512)
   expiresAt DateTime
   revokedAt DateTime?
   usuario   Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
