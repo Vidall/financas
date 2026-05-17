@@ -5,6 +5,18 @@ import { PlanoMensalRepository } from '../plano-mensal/plano-mensal.repository';
 import { CriarEntradaDto } from './dto/criar-entrada.dto';
 import { AtualizarEntradaDto } from './dto/atualizar-entrada.dto';
 import { Dinheiro, Entrada } from '@financas/core';
+import type { EntradaDTO } from '@financas/core';
+
+function toDTO(entrada: Entrada): EntradaDTO {
+  return {
+    id: entrada.id,
+    planoMensalId: entrada.planoMensalId,
+    nome: entrada.nome,
+    valor: entrada.valor.valor,
+    recebido: entrada.recebido,
+    data: entrada.data?.toISOString(),
+  };
+}
 
 @Injectable()
 export class EntradasService {
@@ -13,16 +25,17 @@ export class EntradasService {
     private readonly planoRepo: PlanoMensalRepository,
   ) {}
 
-  async listar(planoMensalId: string) {
-    return this.entradaRepo.findByPlanoMensal(planoMensalId);
+  async listar(planoMensalId: string): Promise<EntradaDTO[]> {
+    const entradas = await this.entradaRepo.findByPlanoMensal(planoMensalId);
+    return entradas.map(toDTO);
   }
 
-  async criar(dto: CriarEntradaDto) {
+  async criar(dto: CriarEntradaDto): Promise<EntradaDTO> {
     const useCase = new RegistrarEntrada(this.entradaRepo, this.planoRepo);
     return useCase.execute(dto);
   }
 
-  async atualizar(id: string, dto: AtualizarEntradaDto) {
+  async atualizar(id: string, dto: AtualizarEntradaDto): Promise<EntradaDTO> {
     const entrada = await this.entradaRepo.findById(id);
     if (!entrada) throw new NotFoundException('Entrada não encontrada');
 
@@ -36,7 +49,7 @@ export class EntradasService {
     });
 
     await this.entradaRepo.save(atualizada);
-    return atualizada;
+    return toDTO(atualizada);
   }
 
   async remover(id: string): Promise<void> {

@@ -4,16 +4,37 @@ import { MetaRepository } from './meta.repository';
 import { CriarMetaDto } from './dto/criar-meta.dto';
 import { AtualizarMetaDto } from './dto/atualizar-meta.dto';
 import { Meta, Dinheiro, StatusPagamento } from '@financas/core';
+import type { MetaDTO } from '@financas/core';
+
+function toDTO(meta: Meta): MetaDTO {
+  return {
+    id: meta.id,
+    planoMensalId: meta.planoMensalId,
+    nome: meta.nome,
+    tipo: meta.tipo,
+    metaTotal: meta.metaTotal.valor,
+    valorMensal: meta.valorMensal.valor,
+    totalGuardado: meta.totalGuardado.valor,
+    percentualAtingido: meta.percentualAtingido,
+    valorRestante: meta.valorRestante,
+    mesesEstimados: meta.mesesEstimados,
+    onde: meta.onde,
+    data: meta.data?.toISOString(),
+    status: meta.status.valor,
+    atingida: meta.atingida,
+  };
+}
 
 @Injectable()
 export class MetasService {
   constructor(private readonly repo: MetaRepository) {}
 
-  listar(planoMensalId: string) {
-    return this.repo.findByPlanoMensal(planoMensalId);
+  async listar(planoMensalId: string): Promise<MetaDTO[]> {
+    const metas = await this.repo.findByPlanoMensal(planoMensalId);
+    return metas.map(toDTO);
   }
 
-  async criar(dto: CriarMetaDto) {
+  async criar(dto: CriarMetaDto): Promise<MetaDTO> {
     const meta = Meta.criar({
       id: crypto.randomUUID(),
       planoMensalId: dto.planoMensalId,
@@ -27,10 +48,10 @@ export class MetasService {
       status: StatusPagamento.Pendente,
     });
     await this.repo.save(meta);
-    return meta;
+    return toDTO(meta);
   }
 
-  async atualizar(id: string, dto: AtualizarMetaDto) {
+  async atualizar(id: string, dto: AtualizarMetaDto): Promise<MetaDTO> {
     const useCase = new AtualizarMeta(this.repo);
     return useCase.execute(id, dto.novoTotalGuardado);
   }

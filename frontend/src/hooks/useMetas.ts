@@ -29,3 +29,11 @@ export function useAtualizarMeta() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['metas'] }),
   });
 }
+
+export function useRemoverMeta() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.delete(`/metas/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['metas'] }),
+  });
+}

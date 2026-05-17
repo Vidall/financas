@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useMeses, useCriarPlano } from '../../../hooks/usePlanoMensal';
-import { useEntradas, useCriarEntrada, useRemoverEntrada } from '../../../hooks/useEntradas';
+import { useEntradas, useCriarEntrada, useRemoverEntrada, useToggleRecebido } from '../../../hooks/useEntradas';
 import { EntradaRow } from '../../../components/entradas/EntradaRow';
 import { NovaEntradaModal } from '../../../components/entradas/NovaEntradaModal';
 import type { CriarEntradaDTO } from '@financas/core';
@@ -16,6 +16,7 @@ export default function EntradasPage() {
   const { data: entradas = [], isLoading } = useEntradas(plano?.id ?? '');
   const criarEntrada = useCriarEntrada();
   const removerEntrada = useRemoverEntrada();
+  const toggleRecebido = useToggleRecebido();
   const criarPlano = useCriarPlano();
   const [modal, setModal] = useState(false);
 
@@ -68,7 +69,12 @@ export default function EntradasPage() {
               </thead>
               <tbody>
                 {entradas.map(e => (
-                  <EntradaRow key={e.id} entrada={e} onRemover={id => removerEntrada.mutate(id)} />
+                  <EntradaRow
+                    key={e.id}
+                    entrada={e}
+                    onRemover={id => removerEntrada.mutate(id)}
+                    onToggleRecebido={(id, recebido) => toggleRecebido.mutate({ id, recebido })}
+                  />
                 ))}
               </tbody>
             </table>

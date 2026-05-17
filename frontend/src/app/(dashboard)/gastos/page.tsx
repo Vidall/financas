@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useMeses, useCriarPlano } from '../../../hooks/usePlanoMensal';
-import { useGastosVariaveis, useCriarGasto } from '../../../hooks/useGastosVariaveis';
+import { useGastosVariaveis, useCriarGasto, useRemoverGasto } from '../../../hooks/useGastosVariaveis';
 import { GastoRow } from '../../../components/gastos-variaveis/GastoRow';
 import { NovoGastoModal } from '../../../components/gastos-variaveis/NovoGastoModal';
 import type { CriarGastoVariavelDTO } from '@financas/core';
@@ -15,12 +15,17 @@ export default function GastosPage() {
   const plano = meses?.find(p => p.mes === mes && p.ano === ano);
   const { data: gastos = [], isLoading } = useGastosVariaveis(plano?.id ?? '');
   const criarGasto = useCriarGasto();
+  const removerGasto = useRemoverGasto();
   const criarPlano = useCriarPlano();
   const [modal, setModal] = useState(false);
 
   const totalPlanejado = gastos.reduce((s, g) => s + g.valorPlanejado, 0);
   const totalReal = gastos.reduce((s, g) => s + (g.valorReal ?? 0), 0);
   const excedidos = gastos.filter(g => g.excedido).length;
+
+  async function handleRemover(id: string) {
+    await removerGasto.mutateAsync(id);
+  }
 
   async function handleSalvar(dto: CriarGastoVariavelDTO) {
     let planoId = plano?.id;
@@ -65,13 +70,13 @@ export default function GastosPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border">
-                  {['Nome', 'Categoria', 'Pagamento', 'Planejado', 'Real', 'Diferença', 'Status', 'Data'].map(h => (
+                  {['Nome', 'Categoria', 'Pagamento', 'Planejado', 'Real', 'Diferença', 'Status', 'Data', ''].map(h => (
                     <th key={h} className="px-4 py-2 text-left text-xs text-muted font-medium">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {gastos.map(g => <GastoRow key={g.id} gasto={g} />)}
+                {gastos.map(g => <GastoRow key={g.id} gasto={g} onRemover={handleRemover} />)}
               </tbody>
             </table>
           </div>

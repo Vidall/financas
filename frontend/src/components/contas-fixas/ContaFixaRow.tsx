@@ -1,11 +1,12 @@
 'use client';
 
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Trash2 } from 'lucide-react';
 import type { ContaFixaDTO } from '@financas/core';
 
 interface Props {
   conta: ContaFixaDTO;
   onPagar: (id: string) => void;
+  onRemover: (id: string) => void;
 }
 
 function BadgeStatus({ status }: { status: string }) {
@@ -14,7 +15,7 @@ function BadgeStatus({ status }: { status: string }) {
   return <span className="badge-yellow">Pendente</span>;
 }
 
-export function ContaFixaRow({ conta, onPagar }: Props) {
+export function ContaFixaRow({ conta, onPagar, onRemover }: Props) {
   const excedido = conta.valorReal !== undefined && conta.valorReal > conta.valorPlanejado;
 
   return (
@@ -29,7 +30,7 @@ export function ContaFixaRow({ conta, onPagar }: Props) {
         {conta.dataPago ? new Date(conta.dataPago).toLocaleDateString('pt-BR') : '—'}
       </td>
       <td className="px-4 py-3 text-xs text-muted max-w-[120px] truncate">{conta.observacao ?? '—'}</td>
-      <td className="px-4 py-3">
+      <td className="px-4 py-3 flex items-center gap-1">
         {conta.status !== 'Concluído' && (
           <button
             onClick={() => onPagar(conta.id)}
@@ -39,6 +40,13 @@ export function ContaFixaRow({ conta, onPagar }: Props) {
             <CheckCircle2 size={14} />
           </button>
         )}
+        <button
+          onClick={() => onRemover(conta.id)}
+          className="p-1.5 text-muted hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+          title="Remover conta"
+        >
+          <Trash2 size={14} />
+        </button>
       </td>
     </tr>
   );

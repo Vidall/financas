@@ -30,3 +30,11 @@ export function usePagarConta() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['contas-fixas'] }),
   });
 }
+
+export function useRemoverContaFixa() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.delete(`/contas-fixas/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['contas-fixas'] }),
+  });
+}

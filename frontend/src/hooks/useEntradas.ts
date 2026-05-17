@@ -28,3 +28,12 @@ export function useRemoverEntrada() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['entradas'] }),
   });
 }
+
+export function useToggleRecebido() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, recebido }: { id: string; recebido: boolean }) =>
+      api.patch(`/entradas/${id}`, { recebido }).then(r => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['entradas'] }),
+  });
+}

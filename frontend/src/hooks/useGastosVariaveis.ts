@@ -31,3 +31,11 @@ export function useAtualizarGasto() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ['gastos-variaveis'] }),
   });
 }
+
+export function useRemoverGasto() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api.delete(`/gastos-variaveis/${id}`),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['gastos-variaveis'] }),
+  });
+}

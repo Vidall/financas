@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useMeses, useCriarPlano } from '../../../hooks/usePlanoMensal';
-import { useMetas, useCriarMeta, useAtualizarMeta } from '../../../hooks/useMetas';
+import { useMetas, useCriarMeta, useAtualizarMeta, useRemoverMeta } from '../../../hooks/useMetas';
 import { MetaCard } from '../../../components/metas/MetaCard';
 import { NovaMetaModal } from '../../../components/metas/NovaMetaModal';
 import { AtualizarMetaModal } from '../../../components/metas/AtualizarMetaModal';
@@ -17,6 +17,7 @@ export default function MetasPage() {
   const { data: metas = [], isLoading } = useMetas(plano?.id ?? '');
   const criarMeta = useCriarMeta();
   const atualizarMeta = useAtualizarMeta();
+  const removerMeta = useRemoverMeta();
   const criarPlano = useCriarPlano();
 
   const [novaModal, setNovaModal] = useState(false);
@@ -33,6 +34,10 @@ export default function MetasPage() {
       planoId = novo.id;
     }
     await criarMeta.mutateAsync({ ...dto, planoMensalId: planoId });
+  }
+
+  async function handleRemover(id: string) {
+    await removerMeta.mutateAsync(id);
   }
 
   async function handleAtualizar(novoTotal: number) {
@@ -73,7 +78,7 @@ export default function MetasPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {metas.map(m => (
-            <MetaCard key={m.id} meta={m} onAtualizar={id => setAtualizando(metas.find(x => x.id === id)!)} />
+            <MetaCard key={m.id} meta={m} onAtualizar={id => setAtualizando(metas.find(x => x.id === id)!)} onRemover={handleRemover} />
           ))}
         </div>
       )}

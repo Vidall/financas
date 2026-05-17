@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useMeses, useCriarPlano } from '../../../hooks/usePlanoMensal';
-import { useContasFixas, useCriarContaFixa, usePagarConta } from '../../../hooks/useContasFixas';
+import { useContasFixas, useCriarContaFixa, usePagarConta, useRemoverContaFixa } from '../../../hooks/useContasFixas';
 import { ContaFixaRow } from '../../../components/contas-fixas/ContaFixaRow';
 import { NovaContaFixaModal } from '../../../components/contas-fixas/NovaContaFixaModal';
 import { PagarContaModal } from '../../../components/contas-fixas/PagarContaModal';
@@ -17,6 +17,7 @@ export default function ContasPage() {
   const { data: contas = [], isLoading } = useContasFixas(plano?.id ?? '');
   const criarConta = useCriarContaFixa();
   const pagarConta = usePagarConta();
+  const removerConta = useRemoverContaFixa();
   const criarPlano = useCriarPlano();
   const [novaModal, setNovaModal] = useState(false);
   const [pagandoConta, setPagandoConta] = useState<ContaFixaDTO | null>(null);
@@ -32,6 +33,10 @@ export default function ContasPage() {
       planoId = novo.id;
     }
     await criarConta.mutateAsync({ ...dto, planoMensalId: planoId });
+  }
+
+  async function handleRemover(id: string) {
+    await removerConta.mutateAsync(id);
   }
 
   async function handlePagar(valorReal: number, dataPago: string, observacao?: string) {
@@ -85,6 +90,7 @@ export default function ContasPage() {
                     key={c.id}
                     conta={c}
                     onPagar={id => setPagandoConta(contas.find(x => x.id === id)!)}
+                    onRemover={handleRemover}
                   />
                 ))}
               </tbody>

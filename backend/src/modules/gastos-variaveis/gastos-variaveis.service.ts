@@ -4,7 +4,23 @@ import { GastoVariavelRepository } from './gasto-variavel.repository';
 import { PlanoMensalRepository } from '../plano-mensal/plano-mensal.repository';
 import { CriarGastoDto } from './dto/criar-gasto.dto';
 import { AtualizarGastoDto } from './dto/atualizar-gasto.dto';
-import { GastoVariavel, Dinheiro } from '@financas/core';
+import { GastoVariavel, GastoVariavelDTO, Dinheiro } from '@financas/core';
+
+function toDTO(gasto: GastoVariavel): GastoVariavelDTO {
+  return {
+    id: gasto.id,
+    planoMensalId: gasto.planoMensalId,
+    nome: gasto.nome,
+    categoria: { nome: gasto.categoria.nome, icone: gasto.categoria.icone },
+    formaPagamento: gasto.formaPagamento,
+    valorPlanejado: gasto.valorPlanejado.valor,
+    valorReal: gasto.valorReal?.valor,
+    diferenca: gasto.diferenca,
+    excedido: gasto.excedido,
+    data: gasto.data?.toISOString(),
+    status: gasto.status.valor,
+  };
+}
 
 @Injectable()
 export class GastosVariaveisService {
@@ -13,16 +29,17 @@ export class GastosVariaveisService {
     private readonly planoRepo: PlanoMensalRepository,
   ) {}
 
-  listar(planoMensalId: string) {
-    return this.gastoRepo.findByPlanoMensal(planoMensalId);
+  async listar(planoMensalId: string): Promise<GastoVariavelDTO[]> {
+    const gastos = await this.gastoRepo.findByPlanoMensal(planoMensalId);
+    return gastos.map(toDTO);
   }
 
-  async criar(dto: CriarGastoDto) {
+  async criar(dto: CriarGastoDto): Promise<GastoVariavelDTO> {
     const useCase = new LancarGasto(this.gastoRepo, this.planoRepo);
     return useCase.execute(dto);
   }
 
-  async atualizar(id: string, dto: AtualizarGastoDto) {
+  async atualizar(id: string, dto: AtualizarGastoDto): Promise<GastoVariavelDTO> {
     const gasto = await this.gastoRepo.findById(id);
     if (!gasto) throw new Error('Gasto não encontrado');
 
@@ -41,7 +58,7 @@ export class GastosVariaveisService {
         });
 
     await this.gastoRepo.save(atualizado);
-    return atualizado;
+    return toDTO(atualizado);
   }
 
   remover(id: string) {

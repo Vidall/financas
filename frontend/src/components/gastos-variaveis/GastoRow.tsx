@@ -1,22 +1,25 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Trash2 } from 'lucide-react';
 import type { GastoVariavelDTO } from '@financas/core';
 
-interface Props { gasto: GastoVariavelDTO; }
+interface Props {
+  gasto: GastoVariavelDTO;
+  onRemover: (id: string) => void;
+}
 
 function BadgeStatus({ status }: { status: string }) {
   if (status === 'Concluído') return <span className="badge-green">Concluído</span>;
   return <span className="badge-yellow">Pendente</span>;
 }
 
-export function GastoRow({ gasto }: Props) {
+export function GastoRow({ gasto, onRemover }: Props) {
   return (
     <tr className="border-b border-border hover:bg-white/[0.02] transition-colors">
       <td className="px-4 py-3 text-sm text-text">{gasto.nome}</td>
       <td className="px-4 py-3 text-xs text-muted">
         <span className="flex items-center gap-1">
-          <span>{gasto.categoria.icone}</span>
+          <span>{gasto.categoria.icone !== undefined ? gasto.categoria.icone : ''}</span>
           {gasto.categoria.nome}
         </span>
       </td>
@@ -34,6 +37,15 @@ export function GastoRow({ gasto }: Props) {
       <td className="px-4 py-3"><BadgeStatus status={gasto.status} /></td>
       <td className="px-4 py-3 text-sm text-muted">
         {gasto.data ? new Date(gasto.data).toLocaleDateString('pt-BR') : '—'}
+      </td>
+      <td className="px-4 py-3">
+        <button
+          onClick={() => onRemover(gasto.id)}
+          className="p-1.5 text-muted hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+          title="Remover gasto"
+        >
+          <Trash2 size={14} />
+        </button>
       </td>
     </tr>
   );

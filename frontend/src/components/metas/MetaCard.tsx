@@ -1,14 +1,15 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, Trash2 } from "lucide-react";
 import type { MetaDTO } from "@financas/core";
 
 interface Props {
   meta: MetaDTO;
   onAtualizar: (id: string) => void;
+  onRemover: (id: string) => void;
 }
 
-export function MetaCard({ meta, onAtualizar }: Props) {
+export function MetaCard({ meta, onAtualizar, onRemover }: Props) {
   const pct = Math.min(meta.percentualAtingido, 100);
 
   const corClass = meta.tipo === "Reserva" ? "bg-neon-cyan" : "bg-neon-purple";
@@ -37,12 +38,21 @@ export function MetaCard({ meta, onAtualizar }: Props) {
           )}
         </div>
 
-        <button
-          onClick={() => onAtualizar(meta.id)}
-          className="btn-primary text-xs py-1 px-2.5"
-        >
-          Atualizar
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onAtualizar(meta.id)}
+            className="btn-primary text-xs py-1 px-2.5"
+          >
+            Atualizar
+          </button>
+          <button
+            onClick={() => onRemover(meta.id)}
+            className="p-1.5 text-muted hover:text-red-400 hover:bg-red-500/10 rounded transition-colors"
+            title="Remover meta"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
       {/* Barra de progresso */}
