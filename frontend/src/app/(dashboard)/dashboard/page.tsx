@@ -78,7 +78,7 @@ export default function DashboardPage() {
         <StatCard
           label="Saídas (real)"
           value={`R$ ${data.real.saidas.toFixed(2)}`}
-          sub={`Planejado: R$ ${data.planejamento.saidas.toFixed(2)}`}
+          sub={`Inclui contas, gastos e metas · Plan: R$ ${data.planejamento.saidas.toFixed(2)}`}
           color="border-neon-cyan/20"
         />
         <StatCard
@@ -218,13 +218,30 @@ export default function DashboardPage() {
       {/* Metas resumo */}
       {data.totalMetas > 0 && (
         <div className="card border-neon-purple/20">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-2">
             <Target size={14} className="text-neon-purple" />
             <h2 className="text-sm font-semibold text-text">Metas e Reservas</h2>
           </div>
-          <p className="text-xs text-muted">
+          <p className="text-xs text-muted mb-3">
             {data.totalMetasAtingidas} de {data.totalMetas} metas atingidas este mês
           </p>
+
+          {metasLista.length > 0 && (
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <p className="text-muted">Total acumulado</p>
+                <p className="text-neon-purple font-medium mt-0.5">
+                  R$ {metasLista.reduce((s, m) => s + (m.totalGuardado ?? 0), 0).toFixed(2)}
+                </p>
+              </div>
+              <div>
+                <p className="text-muted">Guardado neste mês</p>
+                <p className="text-neon-cyan font-medium mt-0.5">
+                  R$ {metasLista.reduce((s, m) => s + (m.valorRealMes ?? 0), 0).toFixed(2)}
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

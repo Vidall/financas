@@ -50,8 +50,8 @@ export class ObterResumoDashboard {
       real: {
         entradas: aggregate.totalEntradasReais.valor,
         saidasContas: aggregate.totalContasFixasReais.valor,
-        saidasGastos: aggregate.totalGastosReais.valor,
-        saidas: aggregate.totalSaidasReais.valor,
+        saidasGastos: aggregate.totalGastosEfetivos.valor,
+        saidas: aggregate.totalSaidasReaisCompleto.valor,
         sobra: aggregate.sobraReal,
       },
       saldoCarteira,

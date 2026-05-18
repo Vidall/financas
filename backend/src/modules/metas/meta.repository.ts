@@ -37,6 +37,12 @@ export class MetaRepository implements IMetaRepository {
     });
   }
 
+  async saveMany(metas: Meta[]): Promise<void> {
+    for (const meta of metas) {
+      await this.save(meta);
+    }
+  }
+
   async delete(id: string): Promise<void> {
     await this.prisma.meta.delete({ where: { id } });
   }

@@ -28,6 +28,13 @@ export function useCriarPlano() {
   return useMutation({
     mutationFn: (payload: { mes: number; ano: number; salarioReferencia: number }) =>
       api.post('/plano', payload).then(r => r.data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['meses'] }),
+    onSuccess: () => {
+      // Ao criar um novo plano, o backend pode clonar metas (valorRealMes=null,
+      // totalGuardado acumulado) e outros artefatos do mês anterior.
+      // Por isso invalidamos meses, dashboard e metas para refletir o estado atualizado.
+      qc.invalidateQueries({ queryKey: ['meses'] });
+      qc.invalidateQueries({ queryKey: ['dashboard'] });
+      qc.invalidateQueries({ queryKey: ['metas'] });
+    },
   });
 }

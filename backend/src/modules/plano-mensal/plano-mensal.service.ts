@@ -23,7 +23,7 @@ export class PlanoMensalService {
   ) {}
 
   async criar(usuarioId: string, dto: CriarPlanoDto) {
-    const useCase = new CriarPlanoMensal(this.planoRepo);
+    const useCase = new CriarPlanoMensal(this.planoRepo, this.metaRepo);
     return useCase.execute({ usuarioId, ...dto });
   }
 

@@ -59,7 +59,8 @@ export function MetaCard({ meta, onAtualizar, onRemover }: Props) {
       <div className="mb-3">
         <div className="flex justify-between text-xs text-muted mb-1.5">
           <span>
-            <span>R$ {Number(meta.totalGuardado ?? 0).toFixed(2)}</span>
+            <span className="block">R$ {Number(meta.totalGuardado ?? 0).toFixed(2)}</span>
+            <span className="text-[10px] text-muted/60">acumulado</span>
           </span>
 
           <span>{pct.toFixed(1)}%</span>
