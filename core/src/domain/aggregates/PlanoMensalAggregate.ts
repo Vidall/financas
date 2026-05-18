@@ -112,8 +112,15 @@ export class PlanoMensalAggregate {
       .reduce((acc, g) => acc.somar(g.valorUtilizado!), Dinheiro.zero());
   }
 
+  get totalGastosEfetivos(): Dinheiro {
+    return this._gastosVariaveis.reduce((acc, g) => {
+      const val = g.valorUtilizado ?? (g.status.isConcluido() ? g.valorReal : undefined);
+      return val ? acc.somar(val) : acc;
+    }, Dinheiro.zero());
+  }
+
   get valorEfetivoDeveria(): number {
-    const saidasEfetivas = this.totalContasFixasConcluidas.somar(this.totalGastosUtilizados);
+    const saidasEfetivas = this.totalContasFixasConcluidas.somar(this.totalGastosEfetivos);
     return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
   }
 
@@ -137,7 +144,8 @@ export class PlanoMensalAggregate {
   }
 
   get sobraReal(): number {
-    return this.totalEntradasReais.subtrairPermitindoNegativo(this.totalSaidasReais);
+    const saidasEfetivas = this.totalContasFixasConcluidas.somar(this.totalGastosEfetivos);
+    return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
   }
 
   get sobraGeral(): number {
