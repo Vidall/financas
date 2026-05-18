@@ -114,18 +114,26 @@ export class PlanoMensalAggregate {
 
   get totalGastosEfetivos(): Dinheiro {
     return this._gastosVariaveis.reduce((acc, g) => {
-      const val = g.valorUtilizado ?? (g.status.isConcluido() ? g.valorReal : undefined);
+      const val = g.valorUtilizado ?? g.valorReal;
       return val ? acc.somar(val) : acc;
     }, Dinheiro.zero());
   }
 
-  get valorEfetivoDeveria(): number {
-    const saidasEfetivas = this.totalContasFixasConcluidas.somar(this.totalGastosEfetivos);
-    return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
-  }
-
   get totalMetasMensais(): Dinheiro {
     return this._metas.reduce((acc, m) => acc.somar(m.valorMensal), Dinheiro.zero());
+  }
+
+  get totalMetasReais(): Dinheiro {
+    return this._metas.reduce((acc, m) => {
+      return m.valorRealMes ? acc.somar(m.valorRealMes) : acc;
+    }, Dinheiro.zero());
+  }
+
+  get valorEfetivoDeveria(): number {
+    const saidasEfetivas = this.totalContasFixasReais
+      .somar(this.totalGastosEfetivos)
+      .somar(this.totalMetasReais);
+    return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
   }
 
   get totalSaidasPlanejadas(): Dinheiro {
@@ -139,12 +147,20 @@ export class PlanoMensalAggregate {
       .somar(this.totalGastosReais);
   }
 
+  get totalSaidasReaisCompleto(): Dinheiro {
+    return this.totalContasFixasReais
+      .somar(this.totalGastosEfetivos)
+      .somar(this.totalMetasReais);
+  }
+
   get sobraPlanejada(): number {
     return this.totalEntradasPlanejadas.subtrairPermitindoNegativo(this.totalSaidasPlanejadas);
   }
 
   get sobraReal(): number {
-    const saidasEfetivas = this.totalContasFixasConcluidas.somar(this.totalGastosEfetivos);
+    const saidasEfetivas = this.totalContasFixasReais
+      .somar(this.totalGastosEfetivos)
+      .somar(this.totalMetasReais);
     return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
   }
 
