@@ -106,8 +106,8 @@ export function GastoRow({ gasto, onRemover, onAtualizar }: Props) {
                   </div>
                 )}
                 {gasto.diferenca !== 0 && (
-                  <div className={`font-medium ${gasto.diferenca < 0 ? 'text-neon-orange' : 'text-neon-green'}`}>
-                    {gasto.diferenca > 0 ? '+' : ''}R$ {gasto.diferenca.toFixed(2)}
+                  <div className={`${gasto.diferenca < 0 ? 'text-neon-orange' : 'text-neon-green'}`}>
+                    Dif: <span className="font-medium">{gasto.diferenca > 0 ? '+' : ''}R$ {gasto.diferenca.toFixed(2)}</span>
                   </div>
                 )}
                 {gasto.data && (

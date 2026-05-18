@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import type { GastoVariavelDTO } from '@financas/core';
 
 interface Props {
   gasto: GastoVariavelDTO;
-  onSalvar: (id: string, dto: { valorReal?: number; valorUtilizado?: number; data?: string }) => void;
+  onSalvar: (id: string, dto: { valorReal?: number; valorUtilizado?: number; data?: string }) => Promise<void>;
   onFechar: () => void;
 }
 
@@ -14,8 +15,9 @@ export function AtualizarGastoModal({ gasto, onSalvar, onFechar }: Props) {
   const [valorUtilizado, setValorUtilizado] = useState(String((gasto as any).valorUtilizado ?? ''));
   const [data, setData] = useState(gasto.data ? gasto.data.slice(0, 10) : '');
   const [erro, setErro] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  function handleSalvar() {
+  async function handleSalvar() {
     const vr = parseFloat(valorReal);
     const vu = valorUtilizado !== '' ? parseFloat(valorUtilizado) : undefined;
 
@@ -24,12 +26,19 @@ export function AtualizarGastoModal({ gasto, onSalvar, onFechar }: Props) {
     if (vu !== undefined && vu > vr) { setErro('Valor utilizado não pode ser maior que o valor real'); return; }
 
     setErro('');
-    onSalvar(gasto.id, {
-      valorReal: vr,
-      valorUtilizado: vu,
-      data: data || undefined,
-    });
-    onFechar();
+    setLoading(true);
+    try {
+      await onSalvar(gasto.id, {
+        valorReal: vr,
+        valorUtilizado: vu,
+        data: data || undefined,
+      });
+      onFechar();
+    } catch {
+      setErro('Erro ao salvar. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -54,7 +63,7 @@ export function AtualizarGastoModal({ gasto, onSalvar, onFechar }: Props) {
           <div>
             <label className="text-xs text-muted block mb-1">
               Valor já utilizado (R$)
-              <span className="ml-1 text-muted/60">opcional — valor pago até agora</span>
+              <span className="ml-1 text-muted/60">opcional — quanto já saiu do bolso</span>
             </label>
             <input
               type="number"
@@ -65,9 +74,9 @@ export function AtualizarGastoModal({ gasto, onSalvar, onFechar }: Props) {
               className="input w-full"
               placeholder="0.00"
             />
-            {valorUtilizado !== '' && !isNaN(parseFloat(valorUtilizado)) && (
-              <p className="text-xs text-muted mt-1">
-                Sobra: R$ {Math.max(0, parseFloat(valorReal || '0') - parseFloat(valorUtilizado)).toFixed(2)}
+            {valorUtilizado !== '' && !isNaN(parseFloat(valorUtilizado)) && !isNaN(parseFloat(valorReal)) && (
+              <p className="text-xs text-neon-green mt-1">
+                Sobra: R$ {Math.max(0, parseFloat(valorReal) - parseFloat(valorUtilizado)).toFixed(2)}
               </p>
             )}
           </div>
@@ -86,8 +95,11 @@ export function AtualizarGastoModal({ gasto, onSalvar, onFechar }: Props) {
         {erro && <p className="text-xs text-neon-orange">{erro}</p>}
 
         <div className="flex gap-2 pt-1">
-          <button onClick={onFechar} className="btn-secondary flex-1">Cancelar</button>
-          <button onClick={handleSalvar} className="btn-primary flex-1">Salvar</button>
+          <button onClick={onFechar} disabled={loading} className="btn-secondary flex-1">Cancelar</button>
+          <button onClick={handleSalvar} disabled={loading} className="btn-primary flex-1 flex items-center justify-center gap-2">
+            {loading && <Loader2 size={13} className="animate-spin" />}
+            {loading ? 'Salvando...' : 'Salvar'}
+          </button>
         </div>
       </div>
     </div>

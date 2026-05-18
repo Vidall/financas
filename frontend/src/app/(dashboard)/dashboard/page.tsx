@@ -66,6 +66,28 @@ export default function DashboardPage() {
         />
       </div>
 
+      {/* Resumo Planejado × Real */}
+      <div className="card">
+        <h2 className="text-sm font-semibold text-text mb-3">Planejado × Real</h2>
+        <div className="grid grid-cols-3 text-[10px] text-muted mb-1 px-1">
+          <span></span>
+          <span className="text-right">Planejado</span>
+          <span className="text-right">Real</span>
+        </div>
+        {[
+          { label: 'Entradas', plano: data.planejamento.entradas, real: data.real.entradas, cor: 'text-neon-green' },
+          { label: 'Contas fixas', plano: (data.planejamento as any).saidasContas ?? 0, real: (data.real as any).saidasContas ?? 0, cor: 'text-neon-cyan' },
+          { label: 'Gastos', plano: (data.planejamento as any).saidasGastos ?? 0, real: (data.real as any).saidasGastos ?? 0, cor: 'text-neon-orange' },
+          { label: 'Sobra', plano: data.planejamento.sobra, real: data.real.sobra, cor: data.real.sobra < 0 ? 'text-neon-orange' : 'text-neon-green' },
+        ].map(({ label, plano, real, cor }) => (
+          <div key={label} className="grid grid-cols-3 text-xs gap-2 py-2 border-t border-border">
+            <span className="text-muted">{label}</span>
+            <span className="text-right text-text">R$ {plano.toFixed(2)}</span>
+            <span className={`text-right font-medium ${cor}`}>R$ {real.toFixed(2)}</span>
+          </div>
+        ))}
+      </div>
+
       {/* Saídas detalhadas */}
       <div className="grid grid-cols-2 gap-4">
         <StatCard

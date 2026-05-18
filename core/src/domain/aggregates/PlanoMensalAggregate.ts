@@ -100,6 +100,17 @@ export class PlanoMensalAggregate {
       .reduce((acc, g) => acc.somar(g.valorReal!), Dinheiro.zero());
   }
 
+  get totalGastosUtilizados(): Dinheiro {
+    return this._gastosVariaveis
+      .filter(g => g.valorUtilizado)
+      .reduce((acc, g) => acc.somar(g.valorUtilizado!), Dinheiro.zero());
+  }
+
+  get valorEfetivoDeveria(): number {
+    const saidasEfetivas = this.totalContasFixasReais.somar(this.totalGastosUtilizados);
+    return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
+  }
+
   get totalMetasMensais(): Dinheiro {
     return this._metas.reduce((acc, m) => acc.somar(m.valorMensal), Dinheiro.zero());
   }

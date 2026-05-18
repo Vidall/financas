@@ -57,8 +57,8 @@ export class ObterResumoDashboard {
       saldoCarteira,
       carteira: {
         valorReal: saldoCarteira,
-        valorDeveria: sobraReal,
-        diferenca: saldoCarteira - sobraReal,
+        valorDeveria: aggregate.valorEfetivoDeveria,
+        diferenca: saldoCarteira - aggregate.valorEfetivoDeveria,
       },
       comprometimento,
       totalMetas: metas.length,
