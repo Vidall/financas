@@ -15,6 +15,7 @@ const TITULOS: Record<string, string> = {
   '/contas':    'Contas Fixas',
   '/gastos':    'Gastos Variáveis',
   '/metas':     'Metas e Reservas',
+  '/carteira':  'Carteira',
 };
 
 export function Header() {
