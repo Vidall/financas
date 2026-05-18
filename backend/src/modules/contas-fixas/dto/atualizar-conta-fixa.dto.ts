@@ -1,12 +1,13 @@
 import { IsNumber, IsOptional, Min } from 'class-validator';
 
-export class AtualizarMetaDto {
+export class AtualizarContaFixaDto {
   @IsNumber()
   @Min(0)
-  novoTotalGuardado: number;
+  @IsOptional()
+  valorPlanejado?: number;
 
   @IsNumber()
   @Min(0)
   @IsOptional()
-  valorRealMes?: number;
+  valorReal?: number;
 }

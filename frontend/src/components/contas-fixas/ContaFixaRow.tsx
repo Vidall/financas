@@ -1,11 +1,12 @@
 'use client';
 
-import { CheckCircle2, Trash2 } from 'lucide-react';
+import { CheckCircle2, Trash2, Pencil } from 'lucide-react';
 import type { ContaFixaDTO } from '@financas/core';
 
 interface Props {
   conta: ContaFixaDTO;
   onPagar: (id: string) => void;
+  onEditar: (id: string) => void;
   onRemover: (id: string) => void;
 }
 
@@ -15,8 +16,18 @@ function BadgeStatus({ status }: { status: string }) {
   return <span className="badge-yellow">Pendente</span>;
 }
 
-export function ContaFixaRow({ conta, onPagar, onRemover }: Props) {
+export function ContaFixaRow({ conta, onPagar, onEditar, onRemover }: Props) {
   const excedido = conta.valorReal !== undefined && conta.valorReal > conta.valorPlanejado;
+
+  const editarBtn = (
+    <button
+      onClick={() => onEditar(conta.id)}
+      className="p-1.5 text-muted hover:text-neon-cyan hover:bg-neon-cyan/10 rounded transition-colors"
+      title="Editar conta"
+    >
+      <Pencil size={14} />
+    </button>
+  );
 
   const pagarBtn = conta.status !== 'Concluído' && (
     <button
@@ -53,6 +64,7 @@ export function ContaFixaRow({ conta, onPagar, onRemover }: Props) {
         </td>
         <td className="px-4 py-3 text-xs text-muted max-w-[120px] truncate">{conta.observacao ?? '—'}</td>
         <td className="px-4 py-3 flex items-center gap-1">
+          {editarBtn}
           {pagarBtn}
           {removeBtn}
         </td>
@@ -86,6 +98,7 @@ export function ContaFixaRow({ conta, onPagar, onRemover }: Props) {
                 )}
               </div>
               <div className="flex items-center gap-1 self-end">
+                {editarBtn}
                 {pagarBtn}
                 {removeBtn}
               </div>

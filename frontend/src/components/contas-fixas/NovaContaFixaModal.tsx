@@ -13,6 +13,7 @@ interface Props {
 export function NovaContaFixaModal({ planoMensalId, onSalvar, onFechar }: Props) {
   const [nome, setNome] = useState('');
   const [valorPlanejado, setValorPlanejado] = useState('');
+  const [valorReal, setValorReal] = useState('');
   const [vencimento, setVencimento] = useState('');
   const [observacao, setObservacao] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,7 @@ export function NovaContaFixaModal({ planoMensalId, onSalvar, onFechar }: Props)
         planoMensalId,
         nome,
         valorPlanejado: Number(valorPlanejado),
+        valorReal: valorReal !== '' ? Number(valorReal) : undefined,
         vencimento: vencimento || undefined,
         observacao: observacao || undefined,
       });
@@ -54,6 +56,14 @@ export function NovaContaFixaModal({ planoMensalId, onSalvar, onFechar }: Props)
             <label className="block text-xs text-muted mb-1.5">Valor planejado (R$)</label>
             <input className="input" type="number" step="0.01" min="0" value={valorPlanejado}
               onChange={e => setValorPlanejado(e.target.value)} required placeholder="0,00" />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5">
+              Valor real (R$)
+              <span className="ml-1 text-muted/60">opcional</span>
+            </label>
+            <input className="input" type="number" step="0.01" min="0" value={valorReal}
+              onChange={e => setValorReal(e.target.value)} placeholder="0,00" />
           </div>
           <div>
             <label className="block text-xs text-muted mb-1.5">Vencimento</label>

@@ -52,7 +52,7 @@ export class ObterResumoDashboard {
         saidasContas: aggregate.totalContasFixasReais.valor,
         saidasGastos: aggregate.totalGastosReais.valor,
         saidas: aggregate.totalSaidasReais.valor,
-        sobra: sobraReal,
+        sobra: aggregate.sobraGeral,
       },
       saldoCarteira,
       carteira: {

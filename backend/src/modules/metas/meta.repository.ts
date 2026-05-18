@@ -28,6 +28,7 @@ export class MetaRepository implements IMetaRepository {
         tipo: data.tipo,
         metaTotal: data.metaTotal,
         valorMensal: data.valorMensal,
+        valorRealMes: data.valorRealMes,
         totalGuardado: data.totalGuardado,
         onde: data.onde,
         data: data.data,

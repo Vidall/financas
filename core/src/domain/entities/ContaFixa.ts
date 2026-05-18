@@ -48,6 +48,14 @@ export class ContaFixa {
     return this;
   }
 
+  atualizar(valorPlanejado?: Dinheiro, valorReal?: Dinheiro): ContaFixa {
+    return new ContaFixa({
+      ...this.props,
+      ...(valorPlanejado !== undefined && { valorPlanejado }),
+      ...(valorReal !== undefined && { valorReal }),
+    });
+  }
+
   pagar(valorReal: Dinheiro, dataPago: Date, observacao?: string): ContaFixa {
     const conta = new ContaFixa({
       ...this.props,

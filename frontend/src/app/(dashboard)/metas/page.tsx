@@ -40,9 +40,9 @@ export default function MetasPage() {
     await removerMeta.mutateAsync(id);
   }
 
-  async function handleAtualizar(novoTotal: number) {
+  async function handleAtualizar(novoTotal: number, valorRealMes?: number) {
     if (!atualizando) return;
-    await atualizarMeta.mutateAsync({ id: atualizando.id, novoTotalGuardado: novoTotal });
+    await atualizarMeta.mutateAsync({ id: atualizando.id, novoTotalGuardado: novoTotal, valorRealMes });
   }
 
   return (
@@ -94,6 +94,8 @@ export default function MetasPage() {
         <AtualizarMetaModal
           metaNome={atualizando.nome}
           totalAtual={atualizando.totalGuardado}
+          valorRealMesAtual={atualizando.valorRealMes}
+          valorMensal={atualizando.valorMensal}
           onConfirmar={handleAtualizar}
           onFechar={() => setAtualizando(null)}
         />

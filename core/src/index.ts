@@ -43,7 +43,7 @@ export type { IContaBancariaRepository } from './application/ports/IContaBancari
 // Application - DTOs
 export type { ResumoDashboardDTO, ComprometimentoDTO, ItemComprometimentoDTO } from './application/dtos/ResumoDashboardDTO';
 export type { EntradaDTO, CriarEntradaDTO } from './application/dtos/EntradaDTO';
-export type { ContaFixaDTO, CriarContaFixaDTO, PagarContaDTO } from './application/dtos/ContaFixaDTO';
+export type { ContaFixaDTO, CriarContaFixaDTO, PagarContaDTO, AtualizarContaFixaDTO } from './application/dtos/ContaFixaDTO';
 export type { GastoVariavelDTO, CriarGastoVariavelDTO } from './application/dtos/GastoVariavelDTO';
 export type { MetaDTO, CriarMetaDTO } from './application/dtos/MetaDTO';
 

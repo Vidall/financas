@@ -15,6 +15,7 @@ export interface MetaDTO {
   tipo: string;
   metaTotal: number;
   valorMensal: number;
+  valorRealMes?: number;
   totalGuardado: number;
   percentualAtingido: number;
   valorRestante: number;

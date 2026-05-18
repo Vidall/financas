@@ -3,6 +3,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { ContasFixasService } from './contas-fixas.service';
 import { CriarContaFixaDto } from './dto/criar-conta-fixa.dto';
 import { PagarContaDto } from './dto/pagar-conta.dto';
+import { AtualizarContaFixaDto } from './dto/atualizar-conta-fixa.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('contas-fixas')
@@ -17,6 +18,11 @@ export class ContasFixasController {
   @Post()
   criar(@Body() dto: CriarContaFixaDto) {
     return this.service.criar(dto);
+  }
+
+  @Patch(':id')
+  atualizar(@Param('id') id: string, @Body() dto: AtualizarContaFixaDto) {
+    return this.service.atualizar(id, dto);
   }
 
   @Patch(':id/pagar')

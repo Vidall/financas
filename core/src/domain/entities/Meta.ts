@@ -11,6 +11,7 @@ export interface MetaProps {
   tipo: TipoMeta;
   metaTotal: Dinheiro;
   valorMensal: Dinheiro;
+  valorRealMes?: Dinheiro;
   totalGuardado: Dinheiro;
   onde?: string;
   data?: Date;
@@ -37,6 +38,7 @@ export class Meta {
   get tipo(): TipoMeta { return this.props.tipo; }
   get metaTotal(): Dinheiro { return this.props.metaTotal; }
   get valorMensal(): Dinheiro { return this.props.valorMensal; }
+  get valorRealMes(): Dinheiro | undefined { return this.props.valorRealMes; }
   get totalGuardado(): Dinheiro { return this.props.totalGuardado; }
   get onde(): string | undefined { return this.props.onde; }
   get data(): Date | undefined { return this.props.data; }
@@ -61,8 +63,12 @@ export class Meta {
     return this.percentualAtingido >= 100;
   }
 
-  atualizar(novoTotalGuardado: Dinheiro): Meta {
-    const meta = new Meta({ ...this.props, totalGuardado: novoTotalGuardado });
+  atualizar(novoTotalGuardado: Dinheiro, valorRealMes?: Dinheiro): Meta {
+    const meta = new Meta({
+      ...this.props,
+      totalGuardado: novoTotalGuardado,
+      ...(valorRealMes !== undefined && { valorRealMes }),
+    });
     meta._events.push(new MetaAtualizadaEvent(this.props.id, this.props.planoMensalId, novoTotalGuardado));
     return meta;
   }

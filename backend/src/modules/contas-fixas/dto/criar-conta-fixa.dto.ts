@@ -11,6 +11,11 @@ export class CriarContaFixaDto {
   @Min(0)
   valorPlanejado: number;
 
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  valorReal?: number;
+
   @IsDateString()
   @IsOptional()
   vencimento?: string;

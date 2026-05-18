@@ -134,6 +134,10 @@ export class PlanoMensalAggregate {
     return this.totalEntradasReais.subtrairPermitindoNegativo(this.totalSaidasReais);
   }
 
+  get sobraGeral(): number {
+    return this.totalEntradasPlanejadas.subtrairPermitindoNegativo(this.totalSaidasReais);
+  }
+
   get saldoCarteira(): Dinheiro {
     return this._contas.reduce((acc, c) => acc.somar(c.saldo), Dinheiro.zero());
   }

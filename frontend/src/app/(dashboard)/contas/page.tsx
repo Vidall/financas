@@ -4,10 +4,11 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useMeses, useCriarPlano } from '../../../hooks/usePlanoMensal';
-import { useContasFixas, useCriarContaFixa, usePagarConta, useRemoverContaFixa } from '../../../hooks/useContasFixas';
+import { useContasFixas, useCriarContaFixa, usePagarConta, useRemoverContaFixa, useEditarContaFixa } from '../../../hooks/useContasFixas';
 import { ContaFixaRow } from '../../../components/contas-fixas/ContaFixaRow';
 import { NovaContaFixaModal } from '../../../components/contas-fixas/NovaContaFixaModal';
 import { PagarContaModal } from '../../../components/contas-fixas/PagarContaModal';
+import { EditarContaFixaModal } from '../../../components/contas-fixas/EditarContaFixaModal';
 import type { CriarContaFixaDTO, ContaFixaDTO } from '@financas/core';
 
 export default function ContasPage() {
@@ -17,10 +18,12 @@ export default function ContasPage() {
   const { data: contas = [], isLoading } = useContasFixas(plano?.id ?? '');
   const criarConta = useCriarContaFixa();
   const pagarConta = usePagarConta();
+  const editarConta = useEditarContaFixa();
   const removerConta = useRemoverContaFixa();
   const criarPlano = useCriarPlano();
   const [novaModal, setNovaModal] = useState(false);
   const [pagandoConta, setPagandoConta] = useState<ContaFixaDTO | null>(null);
+  const [editandoConta, setEditandoConta] = useState<ContaFixaDTO | null>(null);
 
   const totalPlanejado = contas.reduce((s, c) => s + c.valorPlanejado, 0);
   const totalReal = contas.reduce((s, c) => s + (c.valorReal ?? 0), 0);
@@ -43,6 +46,11 @@ export default function ContasPage() {
     if (!pagandoConta) return;
     await pagarConta.mutateAsync({ id: pagandoConta.id, dto: { valorReal, dataPago, observacao } });
     setPagandoConta(null);
+  }
+
+  async function handleEditar(id: string, dto: { valorPlanejado?: number; valorReal?: number }) {
+    await editarConta.mutateAsync({ id, dto });
+    setEditandoConta(null);
   }
 
   return (
@@ -89,6 +97,7 @@ export default function ContasPage() {
                   <ContaFixaRow
                     key={c.id}
                     conta={c}
+                    onEditar={id => setEditandoConta(contas.find(x => x.id === id)!)}
                     onPagar={id => setPagandoConta(contas.find(x => x.id === id)!)}
                     onRemover={handleRemover}
                   />
@@ -112,6 +121,13 @@ export default function ContasPage() {
           valorPlanejado={pagandoConta.valorPlanejado}
           onConfirmar={handlePagar}
           onFechar={() => setPagandoConta(null)}
+        />
+      )}
+      {editandoConta && (
+        <EditarContaFixaModal
+          conta={editandoConta}
+          onSalvar={handleEditar}
+          onFechar={() => setEditandoConta(null)}
         />
       )}
     </div>

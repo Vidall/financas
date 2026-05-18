@@ -24,8 +24,8 @@ export function useCriarMeta() {
 export function useAtualizarMeta() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, novoTotalGuardado }: { id: string; novoTotalGuardado: number }) =>
-      api.patch(`/metas/${id}/atualizar`, { novoTotalGuardado }).then(r => r.data),
+    mutationFn: ({ id, novoTotalGuardado, valorRealMes }: { id: string; novoTotalGuardado: number; valorRealMes?: number }) =>
+      api.patch(`/metas/${id}/atualizar`, { novoTotalGuardado, valorRealMes }).then(r => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['metas'] }),
   });
 }

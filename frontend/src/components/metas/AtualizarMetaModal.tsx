@@ -6,19 +6,22 @@ import { X, Loader2 } from 'lucide-react';
 interface Props {
   metaNome: string;
   totalAtual: number;
-  onConfirmar: (novoTotal: number) => Promise<void>;
+  valorRealMesAtual?: number;
+  valorMensal: number;
+  onConfirmar: (novoTotal: number, valorRealMes?: number) => Promise<void>;
   onFechar: () => void;
 }
 
-export function AtualizarMetaModal({ metaNome, totalAtual, onConfirmar, onFechar }: Props) {
-  const [valor, setValor] = useState(String(totalAtual));
+export function AtualizarMetaModal({ metaNome, totalAtual, valorRealMesAtual, valorMensal, onConfirmar, onFechar }: Props) {
+  const [totalGuardado, setTotalGuardado] = useState(String(totalAtual));
+  const [valorRealMes, setValorRealMes] = useState(valorRealMesAtual !== undefined ? String(valorRealMesAtual) : String(valorMensal));
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     try {
-      await onConfirmar(Number(valor));
+      await onConfirmar(Number(totalGuardado), valorRealMes !== '' ? Number(valorRealMes) : undefined);
       onFechar();
     } finally {
       setLoading(false);
@@ -36,9 +39,14 @@ export function AtualizarMetaModal({ metaNome, totalAtual, onConfirmar, onFechar
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs text-muted mb-1.5">Total guardado (R$)</label>
-            <input className="input" type="number" step="0.01" min="0" value={valor}
-              onChange={e => setValor(e.target.value)} required autoFocus />
+            <label className="block text-xs text-muted mb-1.5">Guardado neste mês — real (R$)</label>
+            <input className="input" type="number" step="0.01" min="0" value={valorRealMes}
+              onChange={e => setValorRealMes(e.target.value)} autoFocus />
+          </div>
+          <div>
+            <label className="block text-xs text-muted mb-1.5">Total guardado acumulado (R$)</label>
+            <input className="input" type="number" step="0.01" min="0" value={totalGuardado}
+              onChange={e => setTotalGuardado(e.target.value)} required />
           </div>
 
           <div className="flex gap-3 pt-2">

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { AtualizarMeta } from '@financas/core';
 import { MetaRepository } from './meta.repository';
 import { CriarMetaDto } from './dto/criar-meta.dto';
 import { AtualizarMetaDto } from './dto/atualizar-meta.dto';
@@ -14,6 +13,7 @@ function toDTO(meta: Meta): MetaDTO {
     tipo: meta.tipo,
     metaTotal: meta.metaTotal.valor,
     valorMensal: meta.valorMensal.valor,
+    valorRealMes: meta.valorRealMes?.valor,
     totalGuardado: meta.totalGuardado.valor,
     percentualAtingido: meta.percentualAtingido,
     valorRestante: meta.valorRestante,
@@ -52,8 +52,14 @@ export class MetasService {
   }
 
   async atualizar(id: string, dto: AtualizarMetaDto): Promise<MetaDTO> {
-    const useCase = new AtualizarMeta(this.repo);
-    return useCase.execute(id, dto.novoTotalGuardado);
+    const meta = await this.repo.findById(id);
+    if (!meta) throw new Error('Meta não encontrada');
+    const atualizada = meta.atualizar(
+      Dinheiro.de(dto.novoTotalGuardado),
+      dto.valorRealMes !== undefined ? Dinheiro.de(dto.valorRealMes) : undefined,
+    );
+    await this.repo.save(atualizada);
+    return toDTO(atualizada);
   }
 
   remover(id: string) {

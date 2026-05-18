@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../services/api';
-import type { ContaFixaDTO, CriarContaFixaDTO, PagarContaDTO } from '@financas/core';
+import type { ContaFixaDTO, CriarContaFixaDTO, PagarContaDTO, AtualizarContaFixaDTO } from '@financas/core';
 
 export function useContasFixas(planoMensalId: string) {
   return useQuery<ContaFixaDTO[]>({
@@ -27,6 +27,15 @@ export function usePagarConta() {
   return useMutation({
     mutationFn: ({ id, dto }: { id: string; dto: PagarContaDTO }) =>
       api.patch(`/contas-fixas/${id}/pagar`, dto).then(r => r.data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['contas-fixas'] }),
+  });
+}
+
+export function useEditarContaFixa() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: AtualizarContaFixaDTO }) =>
+      api.patch(`/contas-fixas/${id}`, dto).then(r => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['contas-fixas'] }),
   });
 }

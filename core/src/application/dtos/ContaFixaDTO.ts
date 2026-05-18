@@ -2,8 +2,14 @@ export interface CriarContaFixaDTO {
   planoMensalId: string;
   nome: string;
   valorPlanejado: number;
+  valorReal?: number;
   vencimento?: string;
   observacao?: string;
+}
+
+export interface AtualizarContaFixaDTO {
+  valorPlanejado?: number;
+  valorReal?: number;
 }
 
 export interface PagarContaDTO {

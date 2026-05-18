@@ -75,26 +75,28 @@ export function MetaCard({ meta, onAtualizar, onRemover }: Props) {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-2 text-center">
+      <div className="grid grid-cols-2 gap-2 text-center mb-2">
         <div>
-          <p className="text-xs text-muted">Mensal</p>
-
-          <p className="text-sm font-medium text-text">
-            R$ {Number(meta.valorMensal ?? 0).toFixed(2)}
+          <p className="text-xs text-muted">Planejado mês</p>
+          <p className="text-sm font-medium text-text">R$ {Number(meta.valorMensal ?? 0).toFixed(2)}</p>
+        </div>
+        <div>
+          <p className="text-xs text-muted">Real mês</p>
+          <p className={`text-sm font-medium ${meta.valorRealMes !== undefined ? (meta.valorRealMes >= meta.valorMensal ? 'text-neon-green' : 'text-neon-orange') : 'text-muted'}`}>
+            {meta.valorRealMes !== undefined ? `R$ ${Number(meta.valorRealMes).toFixed(2)}` : '—'}
           </p>
         </div>
+      </div>
 
+      <div className="grid grid-cols-2 gap-2 text-center">
         <div>
           <p className="text-xs text-muted">Faltam</p>
-
           <p className="text-sm font-medium text-text">
             R$ {Math.max(0, meta.valorRestante ?? 0).toFixed(2)}
           </p>
         </div>
-
         <div>
           <p className="text-xs text-muted">Meses est.</p>
-
           <p className="text-sm font-medium text-text">
             {meta.mesesEstimados ?? "—"}
           </p>
