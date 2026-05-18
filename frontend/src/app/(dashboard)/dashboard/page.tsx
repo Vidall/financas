@@ -1,7 +1,12 @@
 'use client';
 
+import { useState } from 'react';
 import { usePeriodoStore } from '../../../store/periodoStore';
 import { useDashboard, useMeses } from '../../../hooks/usePlanoMensal';
+import { useEntradas } from '../../../hooks/useEntradas';
+import { useContasFixas } from '../../../hooks/useContasFixas';
+import { useGastosVariaveis } from '../../../hooks/useGastosVariaveis';
+import { useMetas } from '../../../hooks/useMetas';
 import { Target, Wallet } from 'lucide-react';
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
@@ -14,10 +19,33 @@ function StatCard({ label, value, sub, color }: { label: string; value: string; 
   );
 }
 
+function SecaoDetalhes({ titulo, count, children }: { titulo: string; count: number; children: React.ReactNode }) {
+  const [aberto, setAberto] = useState(false);
+  return (
+    <div className="card">
+      <button
+        onClick={() => setAberto(v => !v)}
+        className="flex items-center justify-between w-full text-left"
+      >
+        <h2 className="text-sm font-semibold text-text">{titulo}</h2>
+        <span className="text-xs text-muted">{count} itens {aberto ? '▲' : '▼'}</span>
+      </button>
+      {aberto && <div className="mt-3 space-y-2">{children}</div>}
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const { mes, ano } = usePeriodoStore();
   const { data: meses } = useMeses();
   const { data, isLoading, error } = useDashboard(mes, ano);
+
+  const plano = meses?.find(p => p.mes === mes && p.ano === ano);
+  const planoId = plano?.id ?? '';
+  const { data: entradas = [] } = useEntradas(planoId);
+  const { data: contas = [] } = useContasFixas(planoId);
+  const { data: gastos = [] } = useGastosVariaveis(planoId);
+  const { data: metasLista = [] } = useMetas(planoId);
 
   if (isLoading) {
     return <div className="flex items-center justify-center py-20 text-muted text-sm">Carregando...</div>;
@@ -198,6 +226,100 @@ export default function DashboardPage() {
             {data.totalMetasAtingidas} de {data.totalMetas} metas atingidas este mês
           </p>
         </div>
+      )}
+
+      {/* Entradas detalhadas */}
+      {entradas.length > 0 && (
+        <SecaoDetalhes titulo="Entradas do mês" count={entradas.length}>
+          {entradas.map(e => (
+            <div key={e.id} className="flex items-center justify-between text-xs py-1.5 border-t border-border">
+              <div>
+                <span className="text-text">{e.nome}</span>
+                {e.recebido && <span className="ml-2 text-[10px] text-neon-green bg-neon-green/10 px-1.5 py-0.5 rounded-full">Recebido</span>}
+                {!e.recebido && <span className="ml-2 text-[10px] text-yellow-400 bg-yellow-400/10 px-1.5 py-0.5 rounded-full">Pendente</span>}
+              </div>
+              <span className={e.recebido ? 'text-neon-green font-medium' : 'text-muted'}>
+                R$ {e.valor.toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </SecaoDetalhes>
+      )}
+
+      {/* Contas Fixas detalhadas */}
+      {contas.length > 0 && (
+        <SecaoDetalhes titulo="Contas Fixas do mês" count={contas.length}>
+          {contas.map(c => (
+            <div key={c.id} className="flex items-center justify-between text-xs py-1.5 border-t border-border">
+              <div className="flex-1 min-w-0">
+                <span className="text-text truncate block">{c.nome}</span>
+                {c.valorReal !== undefined && (
+                  <span className="text-muted">Real: <span className={c.valorReal > c.valorPlanejado ? 'text-neon-orange' : 'text-neon-cyan'}>R$ {c.valorReal.toFixed(2)}</span></span>
+                )}
+              </div>
+              <div className="text-right ml-2 shrink-0">
+                <div className="text-muted">R$ {c.valorPlanejado.toFixed(2)}</div>
+                <div className={`text-[10px] ${c.status === 'Concluído' ? 'text-neon-green' : c.status === 'Atrasado' ? 'text-neon-orange' : 'text-yellow-400'}`}>
+                  {c.status}
+                </div>
+              </div>
+            </div>
+          ))}
+        </SecaoDetalhes>
+      )}
+
+      {/* Gastos detalhados */}
+      {gastos.length > 0 && (
+        <SecaoDetalhes titulo="Gastos do mês" count={gastos.length}>
+          {gastos.map(g => (
+            <div key={g.id} className="flex items-center justify-between text-xs py-1.5 border-t border-border">
+              <div className="flex-1 min-w-0">
+                <span className="text-text truncate block">{g.nome}</span>
+                <span className="text-muted">{g.categoria.icone} {g.categoria.nome} · {g.formaPagamento}</span>
+                {g.valorUtilizado !== undefined && (
+                  <div className="text-muted">Utilizado: <span className="text-neon-cyan">R$ {g.valorUtilizado.toFixed(2)}</span></div>
+                )}
+              </div>
+              <div className="text-right ml-2 shrink-0">
+                <div className="text-muted">Plan: R$ {g.valorPlanejado.toFixed(2)}</div>
+                {g.valorReal !== undefined && (
+                  <div className={g.excedido ? 'text-neon-orange' : 'text-text'}>Real: R$ {g.valorReal.toFixed(2)}</div>
+                )}
+                <div className={`text-[10px] ${g.status === 'Concluído' ? 'text-neon-green' : 'text-yellow-400'}`}>{g.status}</div>
+              </div>
+            </div>
+          ))}
+        </SecaoDetalhes>
+      )}
+
+      {/* Metas / Reservas detalhadas */}
+      {metasLista.length > 0 && (
+        <SecaoDetalhes titulo="Metas e Reservas do mês" count={metasLista.length}>
+          {metasLista.map(m => {
+            const pctMeta = Math.min(m.percentualAtingido, 100);
+            return (
+              <div key={m.id} className="py-1.5 border-t border-border">
+                <div className="flex items-center justify-between text-xs mb-1">
+                  <span className="text-text">{m.nome}</span>
+                  <span className="text-muted">{pctMeta.toFixed(0)}%</span>
+                </div>
+                <div className="flex justify-between text-xs text-muted mb-1">
+                  <span>Plan mês: <span className="text-text">R$ {m.valorMensal.toFixed(2)}</span></span>
+                  {m.valorRealMes !== undefined
+                    ? <span>Real mês: <span className={m.valorRealMes >= m.valorMensal ? 'text-neon-green' : 'text-neon-orange'}>R$ {m.valorRealMes.toFixed(2)}</span></span>
+                    : <span className="text-muted/50">Real mês: —</span>
+                  }
+                </div>
+                <div className="w-full bg-border rounded-full h-1">
+                  <div
+                    className={`h-1 rounded-full transition-all duration-500 ${m.tipo === 'Reserva' ? 'bg-neon-cyan' : 'bg-neon-purple'}`}
+                    style={{ width: `${pctMeta}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </SecaoDetalhes>
       )}
 
     </div>

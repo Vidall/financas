@@ -90,6 +90,12 @@ export class PlanoMensalAggregate {
       .reduce((acc, c) => acc.somar(c.valorReal!), Dinheiro.zero());
   }
 
+  get totalContasFixasConcluidas(): Dinheiro {
+    return this._contasFixas
+      .filter(c => c.status.isConcluido() && c.valorReal)
+      .reduce((acc, c) => acc.somar(c.valorReal!), Dinheiro.zero());
+  }
+
   get totalGastosPlanejados(): Dinheiro {
     return this._gastosVariaveis.reduce((acc, g) => acc.somar(g.valorPlanejado), Dinheiro.zero());
   }
@@ -107,7 +113,7 @@ export class PlanoMensalAggregate {
   }
 
   get valorEfetivoDeveria(): number {
-    const saidasEfetivas = this.totalContasFixasReais.somar(this.totalGastosUtilizados);
+    const saidasEfetivas = this.totalContasFixasConcluidas.somar(this.totalGastosUtilizados);
     return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
   }
 
