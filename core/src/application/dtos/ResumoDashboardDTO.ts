@@ -39,4 +39,6 @@ export interface ResumoDashboardDTO {
   comprometimento: ComprometimentoDTO;
   totalMetas: number;
   totalMetasAtingidas: number;
+  aReceber: number;
+  aPagar: number;
 }

@@ -35,7 +35,7 @@ export class ObterResumoDashboard {
     const comprometimento = aggregate.comprometimentoSalario;
 
     const saldoCarteira = aggregate.saldoCarteira.valor;
-    const sobraReal = aggregate.sobraReal;
+    const carteiraEsperada = aggregate.carteiraEsperada;
 
     return {
       planoId: plano.id,
@@ -51,18 +51,24 @@ export class ObterResumoDashboard {
         entradas: aggregate.totalEntradasReais.valor,
         saidasContas: aggregate.totalContasFixasReais.valor,
         saidasGastos: aggregate.totalGastosEfetivos.valor,
-        saidas: aggregate.totalSaidasReaisCompleto.valor,
-        sobra: aggregate.sobraReal,
+        // Item 1: contas pagas + gastos planejados + metas reais
+        saidas: aggregate.totalSaidasRealDashboard.valor,
+        // Item 3: (recebidas + aguardando) - (contas reais + gastos utilizados + metas reais)
+        sobra: aggregate.sobraMensalReal,
       },
       saldoCarteira,
       carteira: {
         valorReal: saldoCarteira,
-        valorDeveria: aggregate.valorEfetivoDeveria,
-        diferenca: saldoCarteira - aggregate.valorEfetivoDeveria,
+        // Item 2: recebidas - (contas reais + gastos utilizados + metas reais)
+        valorDeveria: carteiraEsperada,
+        diferenca: saldoCarteira - carteiraEsperada,
       },
       comprometimento,
       totalMetas: metas.length,
       totalMetasAtingidas: metas.filter(m => m.atingida).length,
+      // Item 4
+      aReceber: aggregate.totalEntradasAguardando.valor,
+      aPagar: aggregate.totalAPagar,
     };
   }
 }

@@ -94,6 +94,24 @@ export default function DashboardPage() {
         />
       </div>
 
+      {/* A Receber / A Pagar */}
+      {(data.aReceber > 0 || data.aPagar > 0) && (
+        <div className="grid grid-cols-2 gap-4">
+          <StatCard
+            label="A receber"
+            value={`R$ ${data.aReceber.toFixed(2)}`}
+            sub="Entradas aguardando"
+            color="border-yellow-400/20"
+          />
+          <StatCard
+            label="A pagar"
+            value={`R$ ${data.aPagar.toFixed(2)}`}
+            sub="Contas + gastos + metas pendentes"
+            color="border-neon-orange/20"
+          />
+        </div>
+      )}
+
       {/* Resumo Planejado × Real */}
       <div className="card">
         <h2 className="text-sm font-semibold text-text mb-3">Planejado × Real</h2>

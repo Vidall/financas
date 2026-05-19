@@ -136,6 +136,60 @@ export class PlanoMensalAggregate {
     return this.totalEntradasReais.subtrairPermitindoNegativo(saidasEfetivas);
   }
 
+  // Item 4: entradas com status aguardando (recebido = false)
+  get totalEntradasAguardando(): Dinheiro {
+    return this._entradas
+      .filter(e => !e.recebido)
+      .reduce((acc, e) => acc.somar(e.valor), Dinheiro.zero());
+  }
+
+  // Item 4: contas fixas que ainda não foram pagas
+  get totalContasFixasPendentes(): Dinheiro {
+    return this._contasFixas
+      .filter(c => c.status.isPendente() || c.status.isAtrasado())
+      .reduce((acc, c) => acc.somar(c.valorPlanejado), Dinheiro.zero());
+  }
+
+  // Item 4: metas/reservas planejadas no mês sem valor real lançado
+  get totalMetasPendentes(): Dinheiro {
+    return this._metas
+      .filter(m => !m.valorRealMes)
+      .reduce((acc, m) => acc.somar(m.valorMensal), Dinheiro.zero());
+  }
+
+  // Item 1: Saídas Real = contas pagas + gastos planejados + metas reais
+  get totalSaidasRealDashboard(): Dinheiro {
+    return this.totalContasFixasReais
+      .somar(this.totalGastosPlanejados)
+      .somar(this.totalMetasReais);
+  }
+
+  // Item 2: O que deveria ter na carteira = recebidas - (contas reais + gastos utilizados + metas reais)
+  get carteiraEsperada(): number {
+    const saidas = this.totalContasFixasReais
+      .somar(this.totalGastosUtilizados)
+      .somar(this.totalMetasReais);
+    return this.totalEntradasReais.subtrairPermitindoNegativo(saidas);
+  }
+
+  // Item 3: Sobra real = (recebidas + aguardando) - (contas reais + gastos utilizados + metas reais)
+  get sobraMensalReal(): number {
+    const totalEntradas = this.totalEntradasReais.somar(this.totalEntradasAguardando);
+    const saidas = this.totalContasFixasReais
+      .somar(this.totalGastosUtilizados)
+      .somar(this.totalMetasReais);
+    return totalEntradas.subtrairPermitindoNegativo(saidas);
+  }
+
+  // Item 4: A pagar = contas pendentes + sobra de gastos (não utilizados) + metas sem valor real
+  get totalAPagar(): number {
+    const gastosSobra = this._gastosVariaveis.reduce((acc, g) => {
+      const utilizado = g.valorUtilizado?.valor ?? 0;
+      return acc + Math.max(g.valorPlanejado.valor - utilizado, 0);
+    }, 0);
+    return this.totalContasFixasPendentes.valor + gastosSobra + this.totalMetasPendentes.valor;
+  }
+
   get totalSaidasPlanejadas(): Dinheiro {
     return this.totalContasFixasPlanejadas
       .somar(this.totalGastosPlanejados)
