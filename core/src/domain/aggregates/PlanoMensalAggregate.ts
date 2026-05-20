@@ -157,28 +157,26 @@ export class PlanoMensalAggregate {
       .reduce((acc, m) => acc.somar(m.valorMensal), Dinheiro.zero());
   }
 
-  // Item 1: Saídas Real = contas pagas + gastos planejados + metas reais
+  // Item 1: Saídas Real = contas (valorReal) + gastos planejados + metas mensais (valorMensal)
+  // valorMensal representa o compromisso mensal com metas, independente de valorRealMes estar lançado
   get totalSaidasRealDashboard(): Dinheiro {
     return this.totalContasFixasReais
       .somar(this.totalGastosPlanejados)
-      .somar(this.totalMetasReais);
+      .somar(this.totalMetasMensais);
   }
 
-  // Item 2: O que deveria ter na carteira = recebidas - (contas reais + gastos utilizados + metas reais)
+  // Item 2: O que deveria ter na carteira = recebidas - (somente contas Concluídas + gastos utilizados)
+  // Metas não entram aqui: o aporte de metas não sai da carteira física até ser movimentado
   get carteiraEsperada(): number {
-    const saidas = this.totalContasFixasReais
-      .somar(this.totalGastosUtilizados)
-      .somar(this.totalMetasReais);
+    const saidas = this.totalContasFixasConcluidas
+      .somar(this.totalGastosUtilizados);
     return this.totalEntradasReais.subtrairPermitindoNegativo(saidas);
   }
 
-  // Item 3: Sobra real = (recebidas + aguardando) - (contas reais + gastos utilizados + metas reais)
+  // Item 3: Sobra real = total de entradas (recebidas + aguardando) - Saídas Real (Item 1)
   get sobraMensalReal(): number {
     const totalEntradas = this.totalEntradasReais.somar(this.totalEntradasAguardando);
-    const saidas = this.totalContasFixasReais
-      .somar(this.totalGastosUtilizados)
-      .somar(this.totalMetasReais);
-    return totalEntradas.subtrairPermitindoNegativo(saidas);
+    return totalEntradas.subtrairPermitindoNegativo(this.totalSaidasRealDashboard);
   }
 
   // Item 4: A pagar = contas pendentes + sobra de gastos (não utilizados) + metas sem valor real
