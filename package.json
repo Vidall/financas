@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
+    "start": "pnpm -r start",
     "build": "pnpm -r build",
     "test": "pnpm -r test",
     "dev": "pnpm -r --parallel dev"
