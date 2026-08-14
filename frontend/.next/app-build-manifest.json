@@ -21,6 +21,11 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/layout.js"
     ],
+    "/(dashboard)/entradas/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/entradas/page.js"
+    ],
     "/(dashboard)/carteira/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -31,15 +36,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/contas/page.js"
     ],
+    "/(dashboard)/metas/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/metas/page.js"
+    ],
     "/(dashboard)/gastos/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/gastos/page.js"
     ],
-    "/(dashboard)/metas/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/metas/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
