@@ -1,8 +1,9 @@
 node_modules/
+backend/.env/
 dist/
 .claude
 .env
 .env.local
 *.js.map
 frontend/.next/
-backend/.env/
+
