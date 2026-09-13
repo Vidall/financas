@@ -87,7 +87,7 @@ export default function ContasPage() {
             <table className="w-full">
               <thead className="hidden md:table-header-group">
                 <tr className="border-b border-border">
-                  {['Nome', 'Planejado', 'Pago', 'Status', 'Data', 'Observação', ''].map(h => (
+                  {['Nome', 'Planejado', 'Pago', 'Status', 'Data', "vencimento", 'Observação' ,''].map(h => (
                     <th key={h} className="px-4 py-2 text-left text-xs text-muted font-medium">{h}</th>
                   ))}
                 </tr>
