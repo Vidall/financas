@@ -28,6 +28,7 @@ export default function ContasPage() {
   const totalPlanejado = contas.reduce((s, c) => s + c.valorPlanejado, 0);
   const totalReal = contas.reduce((s, c) => s + (c.valorReal ?? 0), 0);
   const pagas = contas.filter(c => c.status === 'Concluído').length;
+  const totalPendente = totalPlanejado - totalReal
 
   async function handleCriar(dto: CriarContaFixaDTO) {
     let planoId = plano?.id;
@@ -55,7 +56,7 @@ export default function ContasPage() {
 
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-3 gap-3 md:gap-4">
+      <div className="grid grid-cols-4 gap-3 md:gap-4">
         <div className="card">
           <p className="text-xs text-muted mb-1">Planejado</p>
           <p className="text-xl font-bold text-text">R$ {totalPlanejado.toFixed(2)}</p>
@@ -64,7 +65,11 @@ export default function ContasPage() {
           <p className="text-xs text-muted mb-1">Pago</p>
           <p className="text-xl font-bold text-neon-cyan">R$ {totalReal.toFixed(2)}</p>
         </div>
-        <div className="card border-neon-green/20">
+        <div className="card border-neon-orange /20">
+          <p className="text-xs text-muted mb-1">Falta Pagar</p>
+          <p className="text-xl font-bold text-neon-orange">R$ {totalPendente.toFixed(2)}</p>
+        </div>
+                <div className="card border-neon-green/20">
           <p className="text-xs text-muted mb-1">Pagas</p>
           <p className="text-xl font-bold text-neon-green">{pagas}/{contas.length}</p>
         </div>
